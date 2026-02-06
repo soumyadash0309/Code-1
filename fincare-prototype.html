@@ -3,10 +3,2195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fincare Prototype</title>
+    <title>FinCare - Family Financial Readiness</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #F7F7F5;
+            --surface: #FFFFFF;
+            --border: #D6D6D6;
+            --text: #111111;
+            --text2: #2A2A2A;
+            --muted: #555555;
+            --soft: #F1F1EF;
+            --primary: #0F172A;
+            --primary-text: #FFFFFF;
+            --good-bg: #ECFDF5;
+            --good-text: #065F46;
+            --warn-bg: #FFFBEB;
+            --warn-text: #92400E;
+            --bad-bg: #FFF1F2;
+            --bad-text: #9F1239;
+        }
+
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Noto Sans, Apple Color Emoji, Segoe UI Emoji;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .phone-container {
+            max-width: 430px;
+            margin: 20px auto;
+            background: #000;
+            border-radius: 40px;
+            padding: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .screen {
+            background: var(--surface);
+            border-radius: 32px;
+            overflow: hidden;
+            height: 780px;
+            position: relative;
+            display: none;
+        }
+
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .status-bar {
+            padding: 12px 24px 8px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .screen-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 24px 24px;
+        }
+
+        .header {
+            padding: 32px 0 24px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        .header p {
+            font-size: 17px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 14px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--primary-text);
+            margin-bottom: 12px;
+        }
+
+        .btn-primary:active {
+            background: #1e293b;
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--muted);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:active {
+            background: var(--soft);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 17px;
+            font-family: inherit;
+            background: var(--surface);
+            color: var(--text);
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .microcopy {
+            font-size: 15px;
+            color: var(--muted);
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+
+        .nav-buttons {
+            padding: 16px 24px;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+        }
+
+        .checklist {
+            background: var(--soft);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 24px 0;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .checklist-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--border);
+            margin-right: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .checklist-icon.done {
+            background: var(--good-text);
+            color: white;
+        }
+
+        .checklist-text {
+            flex: 1;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .badge {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: var(--good-bg);
+            color: var(--good-text);
+        }
+
+        .badge-warning {
+            background: var(--warn-bg);
+            color: var(--warn-text);
+        }
+
+        .badge-danger {
+            background: var(--bad-bg);
+            color: var(--bad-text);
+        }
+
+        .asset-type-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 24px 0;
+        }
+
+        .asset-type-btn {
+            padding: 20px;
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .asset-type-btn:active {
+            background: var(--soft);
+            border-color: var(--primary);
+        }
+
+        .asset-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .step-indicator {
+            text-align: center;
+            margin-bottom: 16px;
+            font-size: 15px;
+            color: var(--text-gray);
+            font-weight: 500;
+        }
+
+        .toggle-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 14px;
+            background: var(--soft);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .toggle-btn.active {
+            background: var(--primary);
+            color: var(--primary-text);
+            border-color: var(--primary);
+        }
+
+        .asset-list {
+            margin-top: 20px;
+        }
+
+        .asset-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: var(--soft);
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        .asset-info h4 {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .asset-info p {
+            font-size: 15px;
+            color: var(--muted);
+        }
+
+        .certificate-section {
+            background: linear-gradient(135deg, #0F172A 0%, #1e293b 100%);
+            border-radius: 20px;
+            padding: 28px;
+            color: white;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .certificate-icon {
+            font-size: 56px;
+            margin-bottom: 16px;
+        }
+
+        .certificate-status {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .file-upload {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 32px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 20px;
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary);
+            background: var(--soft);
+        }
+
+        .file-upload-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            color: var(--muted);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 10px 18px;
+            background: var(--soft);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: var(--primary-text);
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 60px;
+            left: 24px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .welcome-icon {
+            font-size: 80px;
+            text-align: center;
+            margin: 48px 0 24px;
+        }
+
+        .success-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .success-icon {
+            font-size: 100px;
+            margin-bottom: 24px;
+        }
+
+        .reminder-card {
+            display: flex;
+            align-items: start;
+            gap: 14px;
+            padding: 16px;
+            background: var(--soft);
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        .reminder-icon {
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+
+        .reminder-content h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .reminder-content p {
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .bottom-nav-item.active {
+            background: var(--soft);
+            color: var(--primary);
+        }
+
+        .bottom-nav-icon {
+            font-size: 24px;
+        }
+
+        .bottom-nav-label {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .screen.active {
+            animation: fadeIn 0.3s ease;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 32px;
+        }
+
+        .logo-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #0F172A 0%, #334155 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.2);
+            overflow: hidden;
+        }
+
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+        }
+
+        .logo-icon-text {
+            font-size: 26px;
+            font-weight: 800;
+            color: white;
+            z-index: 1;
+            font-family: ui-sans-serif, system-ui, -apple-system;
+            letter-spacing: -1px;
+        }
+
+        .header-logo-small {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #0F172A 0%, #334155 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.15);
+        }
+
+        .header-logo-small::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+        }
+
+        .header-logo-text {
+            font-size: 18px;
+            font-weight: 800;
+            color: white;
+            z-index: 1;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.5px;
+        }
+
+        .header-with-icons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--soft);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.2s;
+        }
+
+        .icon-btn:active {
+            background: var(--border);
+        }
+
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0F172A 0%, #1e293b 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .otp-inputs {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin: 32px 0;
+        }
+
+        .otp-input {
+            width: 56px;
+            height: 64px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+            background: var(--surface);
+            color: var(--text);
+        }
+
+        .otp-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .timer-text {
+            text-align: center;
+            color: var(--muted);
+            font-size: 15px;
+            margin-top: 16px;
+        }
+
+        .link-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: underline;
+            padding: 0;
+            font-family: inherit;
+        }
+
+        .link-btn:disabled {
+            color: var(--muted);
+            text-decoration: none;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to Fincare</h1>
-    <p>This is a prototype for the Fincare application.</p>
+    <div class="phone-container">
+        <!-- Screen 0: Welcome -->
+        <div class="screen active" id="screen-welcome">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <div class="screen-content">
+                <div class="logo" style="margin-top: 80px;">
+                    <div class="logo-icon">
+                        <div class="logo-icon-text">FC</div>
+                    </div>
+                    <div class="logo-text">FinCare</div>
+                </div>
+                <div class="header">
+                    <h1>Keep your family financially ready.</h1>
+                    <p>Organise assets, track nominees, and enable emergency access — all in one place.</p>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-login')">Continue</button>
+            </div>
+        </div>
+
+        <!-- Screen 1: Login -->
+        <div class="screen" id="screen-login">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <div class="screen-content">
+                <div class="logo" style="margin-top: 60px;">
+                    <div class="logo-icon">
+                        <div class="logo-icon-text">FC</div>
+                    </div>
+                    <div class="logo-text">FinCare</div>
+                </div>
+                <div class="header">
+                    <h1>Welcome to FinCare</h1>
+                    <p>Sign in to get started</p>
+                </div>
+                <div class="input-group">
+                    <label>Mobile Number</label>
+                    <input type="tel" placeholder="+91 9876543210" value="">
+                    <p class="microcopy">We use OTP to keep your account secure.</p>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-otp')">Get OTP</button>
+            </div>
+        </div>
+
+        <!-- Screen 1.5: OTP Verification -->
+        <div class="screen" id="screen-otp">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-login')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header">
+                    <h1>Enter OTP</h1>
+                    <p>We've sent a code to +91 9876543210</p>
+                </div>
+                <div class="otp-inputs">
+                    <input type="text" maxlength="1" class="otp-input" />
+                    <input type="text" maxlength="1" class="otp-input" />
+                    <input type="text" maxlength="1" class="otp-input" />
+                    <input type="text" maxlength="1" class="otp-input" />
+                    <input type="text" maxlength="1" class="otp-input" />
+                    <input type="text" maxlength="1" class="otp-input" />
+                </div>
+                <div class="timer-text">
+                    Resend OTP in <span id="timer">60</span>s
+                </div>
+                <div style="text-align: center; margin-top: 24px;">
+                    <button class="link-btn" id="resend-btn" disabled onclick="resendOTP()">Resend OTP</button>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-owner-profile-1')">Continue</button>
+                <button class="btn btn-secondary" onclick="goToScreen('screen-login')">Change Number</button>
+            </div>
+        </div>
+
+        <!-- Screen 2: Owner Profile - Basic Details -->
+        <div class="screen" id="screen-owner-profile-1">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <div class="screen-content">
+                <div class="step-indicator">Step 1 of 4</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 25%"></div>
+                </div>
+                <div class="header">
+                    <h1>Your Profile</h1>
+                    <p>This helps your family verify details during claims.</p>
+                </div>
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" placeholder="Enter your full name">
+                </div>
+                <div class="input-group">
+                    <label>Date of Birth</label>
+                    <input type="date">
+                </div>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="your@email.com">
+                </div>
+                <div class="input-group">
+                    <label>Mobile Number</label>
+                    <input type="tel" value="+91 9876543210" disabled style="opacity: 0.6;">
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-owner-profile-2')">Continue</button>
+            </div>
+        </div>
+
+        <!-- Screen 3: Owner Profile - Family Context -->
+        <div class="screen" id="screen-owner-profile-2">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <div class="screen-content">
+                <div class="step-indicator">Step 2 of 4</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 50%"></div>
+                </div>
+                <div class="header">
+                    <h1>Family Details</h1>
+                    <p>Used to personalise your Emergency Pack.</p>
+                </div>
+                <div class="input-group">
+                    <label>Marital Status (Optional)</label>
+                    <select>
+                        <option value="">Select</option>
+                        <option value="single">Single</option>
+                        <option value="married">Married</option>
+                        <option value="divorced">Divorced</option>
+                        <option value="widowed">Widowed</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Spouse Name (Optional)</label>
+                    <input type="text" placeholder="Enter spouse name">
+                </div>
+                <div class="input-group">
+                    <label>Number of Dependents (Optional)</label>
+                    <select>
+                        <option value="">Select</option>
+                        <option value="0">None</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4+</option>
+                    </select>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-owner-profile-3')">Continue</button>
+            </div>
+        </div>
+
+        <!-- Screen 4: Owner Profile - Emergency Contact -->
+        <div class="screen" id="screen-owner-profile-3">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <div class="screen-content">
+                <div class="step-indicator">Step 3 of 4</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 75%"></div>
+                </div>
+                <div class="header">
+                    <h1>Emergency Contact</h1>
+                    <p>This contact can help in urgent situations.</p>
+                </div>
+                <div class="input-group">
+                    <label>Name</label>
+                    <input type="text" placeholder="Contact name">
+                </div>
+                <div class="input-group">
+                    <label>Relationship</label>
+                    <select>
+                        <option value="">Select relationship</option>
+                        <option value="spouse">Spouse</option>
+                        <option value="child">Adult Child</option>
+                        <option value="sibling">Sibling</option>
+                        <option value="parent">Parent</option>
+                        <option value="friend">Friend</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Phone Number</label>
+                    <input type="tel" placeholder="+91 9876543210">
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-owner-profile-4')">Continue</button>
+            </div>
+        </div>
+
+        <!-- Screen 5: Owner Profile - Security -->
+        <div class="screen" id="screen-owner-profile-4">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <div class="screen-content">
+                <div class="step-indicator">Step 4 of 4</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 100%"></div>
+                </div>
+                <div class="header">
+                    <h1>Security Settings</h1>
+                    <p>Your data stays encrypted and protected.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">App Lock</div>
+                            <p class="microcopy">PIN or Fingerprint</p>
+                        </div>
+                        <div style="padding: 8px 16px; background: var(--primary); color: var(--primary-text); border-radius: 10px; font-size: 14px; font-weight: 600;">Enabled</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Recovery Method</div>
+                            <p class="microcopy">OTP + Email</p>
+                        </div>
+                        <div style="padding: 8px 16px; background: var(--primary); color: var(--primary-text); border-radius: 10px; font-size: 14px; font-weight: 600;">Enabled</div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-quick-start')">Continue</button>
+            </div>
+        </div>
+
+        <!-- Screen 6: Quick Start Intro -->
+        <div class="screen" id="screen-quick-start">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <div class="screen-content">
+                <div class="header">
+                    <h1>Quick Start</h1>
+                    <p style="font-size: 18px; font-weight: 600; margin-top: 8px;">Set up the essentials so your family can access the Emergency Pack.</p>
+                </div>
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <div class="checklist-icon">⏱️</div>
+                        <div class="checklist-text">Trusted member → Pending</div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checklist-icon">⏱️</div>
+                        <div class="checklist-text">Critical assets → Pending</div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checklist-icon">⏱️</div>
+                        <div class="checklist-text">Documents → Pending</div>
+                    </div>
+                    <div class="checklist-item">
+                        <div class="checklist-icon">⏱️</div>
+                        <div class="checklist-text">Nominee status → Pending</div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-add-trusted-member')">Continue</button>
+                <button class="btn btn-secondary" onclick="goToScreen('screen-home')">Skip for now</button>
+            </div>
+        </div>
+
+        <!-- Screen 7: Add Trusted Member -->
+        <div class="screen" id="screen-add-trusted-member">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-quick-start')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header">
+                    <h1>Add Trusted Member</h1>
+                    <p>This person can request Emergency access if something happens.</p>
+                </div>
+                <div class="input-group">
+                    <label>Name</label>
+                    <input type="text" placeholder="Enter name">
+                </div>
+                <div class="input-group">
+                    <label>Relationship</label>
+                    <select>
+                        <option value="">Select relationship</option>
+                        <option value="spouse">Spouse</option>
+                        <option value="child">Adult Child</option>
+                        <option value="sibling">Sibling</option>
+                        <option value="parent">Parent</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Phone Number</label>
+                    <input type="tel" placeholder="+91 9876543210">
+                </div>
+                <div class="input-group">
+                    <label>Email (Optional)</label>
+                    <input type="email" placeholder="email@example.com">
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-add-critical-assets')">Add Member</button>
+            </div>
+        </div>
+
+        <!-- Screen 8: Add Critical Assets -->
+        <div class="screen" id="screen-add-critical-assets">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-add-trusted-member')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header">
+                    <h1>Add Critical Assets</h1>
+                    <p>Adding these 3 gives your family a usable Emergency Pack.</p>
+                </div>
+                <div style="margin-top: 32px;">
+                    <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--muted);">Select asset to add (1 of 3)</h3>
+                </div>
+                <div class="asset-type-grid">
+                    <div class="asset-type-btn" onclick="goToScreen('screen-asset-details-health')">
+                        <div class="asset-icon">🏥</div>
+                        <div>Health Insurance</div>
+                    </div>
+                    <div class="asset-type-btn" onclick="goToScreen('screen-asset-details-life')">
+                        <div class="asset-icon">🛡️</div>
+                        <div>Life Insurance</div>
+                    </div>
+                    <div class="asset-type-btn" onclick="goToScreen('screen-asset-details-bank')">
+                        <div class="asset-icon">🏦</div>
+                        <div>Bank Account</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 9: Asset Details (Health Insurance) -->
+        <div class="screen" id="screen-asset-details-health">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-add-critical-assets')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header">
+                    <h1>Health Insurance</h1>
+                    <p>Documents and nominee status reduce claim delays.</p>
+                </div>
+                <div class="input-group">
+                    <label>Provider Name</label>
+                    <input type="text" placeholder="e.g., HDFC Ergo">
+                </div>
+                <div class="input-group">
+                    <label>Policy Number</label>
+                    <input type="text" placeholder="Enter policy number">
+                </div>
+                <div class="input-group">
+                    <label>Renewal Date</label>
+                    <input type="date">
+                </div>
+                <div class="input-group">
+                    <label>Nominee Status</label>
+                    <div class="toggle-group">
+                        <div class="toggle-btn active">Yes</div>
+                        <div class="toggle-btn">No</div>
+                        <div class="toggle-btn">Not Sure</div>
+                    </div>
+                </div>
+                <div class="file-upload">
+                    <div class="file-upload-icon">📄</div>
+                    <p style="font-weight: 600; margin-bottom: 4px;">Upload Document</p>
+                    <p class="microcopy">Upload a document to autofill instantly.</p>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-asset-details-life')">Save & Continue</button>
+            </div>
+        </div>
+
+        <!-- Screen 9B: Asset Details (Life Insurance) -->
+        <div class="screen" id="screen-asset-details-life">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-add-critical-assets')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div style="margin-bottom: 16px;">
+                    <p style="font-size: 14px; color: var(--muted); font-weight: 600;">2 of 3 Critical Assets</p>
+                </div>
+                <div class="header">
+                    <h1>Life Insurance</h1>
+                    <p>Documents and nominee status reduce claim delays.</p>
+                </div>
+                <div class="input-group">
+                    <label>Provider Name</label>
+                    <input type="text" placeholder="e.g., ICICI Prudential">
+                </div>
+                <div class="input-group">
+                    <label>Policy Number</label>
+                    <input type="text" placeholder="Enter policy number">
+                </div>
+                <div class="input-group">
+                    <label>Maturity Date</label>
+                    <input type="date">
+                </div>
+                <div class="input-group">
+                    <label>Nominee Status</label>
+                    <div class="toggle-group">
+                        <div class="toggle-btn active">Yes</div>
+                        <div class="toggle-btn">No</div>
+                        <div class="toggle-btn">Not Sure</div>
+                    </div>
+                </div>
+                <div class="file-upload">
+                    <div class="file-upload-icon">📄</div>
+                    <p style="font-weight: 600; margin-bottom: 4px;">Upload Document</p>
+                    <p class="microcopy">Upload a document to autofill instantly.</p>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-asset-details-bank')">Save & Continue</button>
+            </div>
+        </div>
+
+        <!-- Screen 9C: Asset Details (Bank Account) -->
+        <div class="screen" id="screen-asset-details-bank">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-add-critical-assets')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div style="margin-bottom: 16px;">
+                    <p style="font-size: 14px; color: var(--muted); font-weight: 600;">3 of 3 Critical Assets</p>
+                </div>
+                <div class="header">
+                    <h1>Bank Account</h1>
+                    <p>Documents and nominee status reduce claim delays.</p>
+                </div>
+                <div class="input-group">
+                    <label>Bank Name</label>
+                    <input type="text" placeholder="e.g., HDFC Bank">
+                </div>
+                <div class="input-group">
+                    <label>Account Type</label>
+                    <select>
+                        <option value="">Select account type</option>
+                        <option value="savings">Savings Account</option>
+                        <option value="current">Current Account</option>
+                        <option value="salary">Salary Account</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Account Number</label>
+                    <input type="text" placeholder="Enter account number">
+                </div>
+                <div class="input-group">
+                    <label>IFSC Code</label>
+                    <input type="text" placeholder="e.g., HDFC0001234">
+                </div>
+                <div class="input-group">
+                    <label>Nominee Status</label>
+                    <div class="toggle-group">
+                        <div class="toggle-btn active">Yes</div>
+                        <div class="toggle-btn">No</div>
+                        <div class="toggle-btn">Not Sure</div>
+                    </div>
+                </div>
+                <div class="file-upload">
+                    <div class="file-upload-icon">📄</div>
+                    <p style="font-weight: 600; margin-bottom: 4px;">Upload Document</p>
+                    <p class="microcopy">Upload passbook or statement to autofill.</p>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-quick-start-complete')">Complete Setup</button>
+            </div>
+        </div>
+
+        <!-- Screen 10: Quick Start Complete -->
+        <div class="screen" id="screen-quick-start-complete">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <div class="screen-content">
+                <div class="success-screen">
+                    <div class="success-icon">✅</div>
+                    <h1 style="font-size: 32px; margin-bottom: 16px;">All Set!</h1>
+                    <p style="font-size: 18px; color: var(--muted); margin-bottom: 32px;">Your family can now access the essentials in one place.</p>
+                    <div class="checklist" style="width: 100%; text-align: left;">
+                        <div class="checklist-item">
+                            <div class="checklist-icon done">✓</div>
+                            <div class="checklist-text">Emergency Pack created</div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-icon done">✓</div>
+                            <div class="checklist-text">Emergency Ready Certificate generated</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-emergency-pack')">View Emergency Pack</button>
+                <button class="btn btn-secondary" onclick="goToScreen('screen-home')">Go to Home</button>
+            </div>
+        </div>
+
+        <!-- Screen 11: Home -->
+        <div class="screen" id="screen-home">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <div class="header-with-icons">
+                <div class="header-left">
+                    <div class="header-logo-small">
+                        <div class="header-logo-text">FC</div>
+                    </div>
+                    <div class="header-title">FinCare</div>
+                </div>
+                <div class="header-icons">
+                    <button class="icon-btn">🔔</button>
+                    <div class="profile-pic">RK</div>
+                </div>
+            </div>
+            <div class="screen-content" style="padding-top: 16px;">
+                
+                <!-- Emergency Ready Certificate Card -->
+                <div class="certificate-section">
+                    <div class="certificate-icon">🛡️</div>
+                    <div class="certificate-status">Some Gaps</div>
+                    <p style="opacity: 0.9; margin-bottom: 16px;">This status is based on nominees, documents, renewals, and access setup.</p>
+                    <button class="btn" style="background: white; color: var(--primary); padding: 14px;" onclick="goToScreen('screen-certificate')">Fix Gaps</button>
+                </div>
+
+                <!-- Readiness Steps -->
+                <div style="margin-bottom: 24px;">
+                    <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Action Items</h3>
+                    <div class="reminder-card" style="cursor: pointer;" onclick="goToScreen('screen-nominee-gap')">
+                        <div class="reminder-icon">⚠️</div>
+                        <div class="reminder-content">
+                            <h4>Nominee missing in 2 assets</h4>
+                            <p>Update to reduce claim delays</p>
+                        </div>
+                    </div>
+                    <div class="reminder-card" style="cursor: pointer;" onclick="goToScreen('screen-renewal-reminder')">
+                        <div class="reminder-icon">📅</div>
+                        <div class="reminder-content">
+                            <h4>1 renewal due in 7 days</h4>
+                            <p>Health insurance renewal approaching</p>
+                        </div>
+                    </div>
+                    <div class="reminder-card" style="cursor: pointer;" onclick="goToScreen('screen-document-missing')">
+                        <div class="reminder-icon">📄</div>
+                        <div class="reminder-content">
+                            <h4>3 documents missing</h4>
+                            <p>Upload to complete your records</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Assets Snapshot -->
+                <div style="margin-bottom: 24px;">
+                    <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Your Assets</h3>
+                    <div class="asset-type-grid">
+                        <div class="asset-type-btn" onclick="goToScreen('screen-asset-inventory')">
+                            <div class="asset-icon">🏥</div>
+                            <div>Insurance</div>
+                            <p style="font-size: 14px; color: var(--muted); margin-top: 4px;">3 items</p>
+                        </div>
+                        <div class="asset-type-btn">
+                            <div class="asset-icon">🏦</div>
+                            <div>Banks</div>
+                            <p style="font-size: 14px; color: var(--muted); margin-top: 4px;">2 items</p>
+                        </div>
+                        <div class="asset-type-btn">
+                            <div class="asset-icon">💰</div>
+                            <div>Investments</div>
+                            <p style="font-size: 14px; color: var(--muted); margin-top: 4px;">1 item</p>
+                        </div>
+                        <div class="asset-type-btn" onclick="goToScreen('screen-add-asset-type')">
+                            <div class="asset-icon">➕</div>
+                            <div>Add Asset</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom-nav">
+                <div class="bottom-nav-item active">
+                    <div class="bottom-nav-icon">🏠</div>
+                    <div class="bottom-nav-label">Home</div>
+                </div>
+                <div class="bottom-nav-item" onclick="goToScreen('screen-asset-inventory')">
+                    <div class="bottom-nav-icon">📊</div>
+                    <div class="bottom-nav-label">Assets</div>
+                </div>
+                <div class="bottom-nav-item" onclick="goToScreen('screen-reminders')">
+                    <div class="bottom-nav-icon">🔔</div>
+                    <div class="bottom-nav-label">Reminders</div>
+                </div>
+                <div class="bottom-nav-item" onclick="goToScreen('screen-trusted-members')">
+                    <div class="bottom-nav-icon">👥</div>
+                    <div class="bottom-nav-label">Family</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 12: Add Asset Type Selection -->
+        <div class="screen" id="screen-add-asset-type">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header">
+                    <h1>Add Asset</h1>
+                    <p>Add anything your family may need to access or claim.</p>
+                </div>
+                <div class="asset-type-grid">
+                    <div class="asset-type-btn" onclick="goToScreen('screen-add-bank-details')">
+                        <div class="asset-icon">🏦</div>
+                        <div>Bank</div>
+                    </div>
+                    <div class="asset-type-btn" onclick="goToScreen('screen-add-fd-details')">
+                        <div class="asset-icon">💎</div>
+                        <div>FD/RD</div>
+                    </div>
+                    <div class="asset-type-btn" onclick="goToScreen('screen-add-mf-details')">
+                        <div class="asset-icon">📈</div>
+                        <div>Mutual Fund</div>
+                    </div>
+                    <div class="asset-type-btn">
+                        <div class="asset-icon">📊</div>
+                        <div>Demat</div>
+                    </div>
+                    <div class="asset-type-btn">
+                        <div class="asset-icon">🏥</div>
+                        <div>Health Insurance</div>
+                    </div>
+                    <div class="asset-type-btn">
+                        <div class="asset-icon">🛡️</div>
+                        <div>Life Insurance</div>
+                    </div>
+                    <div class="asset-type-btn">
+                        <div class="asset-icon">🏠</div>
+                        <div>Loan</div>
+                    </div>
+                    <div class="asset-type-btn">
+                        <div class="asset-icon">💼</div>
+                        <div>EPF/NPS/PPF</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 12A: Add Bank Account Details -->
+        <div class="screen" id="screen-add-bank-details">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-add-asset-type')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header">
+                    <h1>Add Bank Account</h1>
+                    <p>Documents and nominee status reduce claim delays.</p>
+                </div>
+                <div class="input-group">
+                    <label>Bank Name</label>
+                    <input type="text" placeholder="e.g., HDFC Bank, SBI, ICICI">
+                </div>
+                <div class="input-group">
+                    <label>Account Type</label>
+                    <select>
+                        <option value="">Select account type</option>
+                        <option value="savings">Savings Account</option>
+                        <option value="current">Current Account</option>
+                        <option value="salary">Salary Account</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Account Number</label>
+                    <input type="text" placeholder="Enter account number">
+                </div>
+                <div class="input-group">
+                    <label>IFSC Code</label>
+                    <input type="text" placeholder="e.g., HDFC0001234">
+                </div>
+                <div class="input-group">
+                    <label>Branch Name (Optional)</label>
+                    <input type="text" placeholder="Enter branch name">
+                </div>
+                <div class="input-group">
+                    <label>Nominee Status</label>
+                    <div class="toggle-group">
+                        <div class="toggle-btn active">Yes</div>
+                        <div class="toggle-btn">No</div>
+                        <div class="toggle-btn">Not Sure</div>
+                    </div>
+                </div>
+                <div class="file-upload">
+                    <div class="file-upload-icon">📄</div>
+                    <p style="font-weight: 600; margin-bottom: 4px;">Upload Document</p>
+                    <p class="microcopy">Upload passbook or statement to autofill.</p>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-asset-inventory')">Save Asset</button>
+            </div>
+        </div>
+
+        <!-- Screen 12B: Add Fixed Deposit Details -->
+        <div class="screen" id="screen-add-fd-details">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-add-asset-type')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header">
+                    <h1>Add Fixed Deposit</h1>
+                    <p>Track maturity dates and nominee details.</p>
+                </div>
+                <div class="input-group">
+                    <label>Bank/Institution Name</label>
+                    <input type="text" placeholder="e.g., SBI, HDFC Bank">
+                </div>
+                <div class="input-group">
+                    <label>FD/RD Type</label>
+                    <select>
+                        <option value="">Select type</option>
+                        <option value="fd">Fixed Deposit</option>
+                        <option value="rd">Recurring Deposit</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Account/Certificate Number</label>
+                    <input type="text" placeholder="Enter number">
+                </div>
+                <div class="input-group">
+                    <label>Principal Amount</label>
+                    <input type="text" placeholder="e.g., 5,00,000">
+                </div>
+                <div class="input-group">
+                    <label>Maturity Date</label>
+                    <input type="date">
+                </div>
+                <div class="input-group">
+                    <label>Interest Rate (Optional)</label>
+                    <input type="text" placeholder="e.g., 7.5%">
+                </div>
+                <div class="input-group">
+                    <label>Nominee Status</label>
+                    <div class="toggle-group">
+                        <div class="toggle-btn active">Yes</div>
+                        <div class="toggle-btn">No</div>
+                        <div class="toggle-btn">Not Sure</div>
+                    </div>
+                </div>
+                <div class="file-upload">
+                    <div class="file-upload-icon">📄</div>
+                    <p style="font-weight: 600; margin-bottom: 4px;">Upload Document</p>
+                    <p class="microcopy">Upload FD certificate or receipt.</p>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-asset-inventory')">Save Asset</button>
+            </div>
+        </div>
+
+        <!-- Screen 12C: Add Mutual Fund Details -->
+        <div class="screen" id="screen-add-mf-details">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-add-asset-type')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header">
+                    <h1>Add Mutual Fund</h1>
+                    <p>Keep track of your investment portfolio.</p>
+                </div>
+                <div class="input-group">
+                    <label>AMC/Fund House</label>
+                    <input type="text" placeholder="e.g., HDFC MF, SBI MF, ICICI Prudential">
+                </div>
+                <div class="input-group">
+                    <label>Scheme Name</label>
+                    <input type="text" placeholder="e.g., HDFC Flexi Cap Fund">
+                </div>
+                <div class="input-group">
+                    <label>Folio Number</label>
+                    <input type="text" placeholder="Enter folio number">
+                </div>
+                <div class="input-group">
+                    <label>Investment Type</label>
+                    <select>
+                        <option value="">Select type</option>
+                        <option value="sip">SIP (Systematic Investment Plan)</option>
+                        <option value="lumpsum">Lumpsum</option>
+                        <option value="both">Both SIP & Lumpsum</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Nominee Status</label>
+                    <div class="toggle-group">
+                        <div class="toggle-btn active">Yes</div>
+                        <div class="toggle-btn">No</div>
+                        <div class="toggle-btn">Not Sure</div>
+                    </div>
+                </div>
+                <div class="file-upload">
+                    <div class="file-upload-icon">📄</div>
+                    <p style="font-weight: 600; margin-bottom: 4px;">Upload Document</p>
+                    <p class="microcopy">Upload statement or holding details.</p>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-asset-inventory')">Save Asset</button>
+            </div>
+        </div>
+
+        <!-- Screen 13: Asset Inventory -->
+        <div class="screen" id="screen-asset-inventory">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header" style="text-align: left;">
+                    <h1>Asset Inventory</h1>
+                </div>
+                <div class="tabs">
+                    <div class="tab active" onclick="showAssetTab('all')">All</div>
+                    <div class="tab" onclick="showAssetTab('insurance')">Insurance</div>
+                    <div class="tab" onclick="showAssetTab('banks')">Banks</div>
+                    <div class="tab" onclick="showAssetTab('investments')">Investments</div>
+                    <div class="tab" onclick="showAssetTab('loans')">Loans</div>
+                </div>
+                <div class="asset-list" id="asset-list-all">
+                    <div class="asset-item">
+                        <div class="asset-info">
+                            <h4>HDFC Health Insurance</h4>
+                            <p>Policy: ****3456 • Renews: 15 Feb 2026</p>
+                        </div>
+                        <div class="badge badge-warning">No Nominee</div>
+                    </div>
+                    <div class="asset-item">
+                        <div class="asset-info">
+                            <h4>ICICI Life Insurance</h4>
+                            <p>Policy: ****7890 • Matures: 10 Jun 2030</p>
+                        </div>
+                        <div class="badge badge-success">Complete</div>
+                    </div>
+                    <div class="asset-item">
+                        <div class="asset-info">
+                            <h4>HDFC Bank Savings</h4>
+                            <p>A/c: ****1234</p>
+                        </div>
+                        <div class="badge badge-danger">Missing Doc</div>
+                    </div>
+                    <div class="asset-item">
+                        <div class="asset-info">
+                            <h4>SBI Fixed Deposit</h4>
+                            <p>A/c: ****5678 • Matures: 01 Mar 2026</p>
+                        </div>
+                        <div class="badge badge-success">Complete</div>
+                    </div>
+                </div>
+                <div class="asset-list" id="asset-list-insurance" style="display: none;">
+                    <div class="asset-item">
+                        <div class="asset-info">
+                            <h4>HDFC Health Insurance</h4>
+                            <p>Policy: ****3456 • Renews: 15 Feb 2026</p>
+                        </div>
+                        <div class="badge badge-warning">No Nominee</div>
+                    </div>
+                    <div class="asset-item">
+                        <div class="asset-info">
+                            <h4>ICICI Life Insurance</h4>
+                            <p>Policy: ****7890 • Matures: 10 Jun 2030</p>
+                        </div>
+                        <div class="badge badge-success">Complete</div>
+                    </div>
+                </div>
+                <div class="asset-list" id="asset-list-banks" style="display: none;">
+                    <div class="asset-item">
+                        <div class="asset-info">
+                            <h4>HDFC Bank Savings</h4>
+                            <p>A/c: ****1234</p>
+                        </div>
+                        <div class="badge badge-danger">Missing Doc</div>
+                    </div>
+                </div>
+                <div class="asset-list" id="asset-list-investments" style="display: none;">
+                    <div class="asset-item">
+                        <div class="asset-info">
+                            <h4>SBI Fixed Deposit</h4>
+                            <p>A/c: ****5678 • Matures: 01 Mar 2026</p>
+                        </div>
+                        <div class="badge badge-success">Complete</div>
+                    </div>
+                </div>
+                <div class="asset-list" id="asset-list-loans" style="display: none;">
+                    <div style="text-align: center; padding: 60px 20px;">
+                        <div style="font-size: 48px; margin-bottom: 16px; opacity: 0.5;">💼</div>
+                        <p style="color: var(--muted);">No loans added yet</p>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-add-asset-type')">Add New Asset</button>
+            </div>
+        </div>
+
+        <!-- Screen 14: Reminders -->
+        <div class="screen" id="screen-reminders">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header" style="text-align: left;">
+                    <h1>Reminders</h1>
+                    <p>FinCare keeps your finances updated automatically.</p>
+                </div>
+                <div class="tabs">
+                    <div class="tab active">All</div>
+                    <div class="tab">Renewals</div>
+                    <div class="tab">Maturities</div>
+                    <div class="tab">Nominees</div>
+                </div>
+                <div style="margin-top: 20px;">
+                    <div class="reminder-card">
+                        <div class="reminder-icon">📅</div>
+                        <div class="reminder-content">
+                            <h4>HDFC Health Insurance Renewal</h4>
+                            <p>Due in 7 days • Feb 15, 2026</p>
+                        </div>
+                    </div>
+                    <div class="reminder-card">
+                        <div class="reminder-icon">💰</div>
+                        <div class="reminder-content">
+                            <h4>SBI Fixed Deposit Maturity</h4>
+                            <p>Due in 22 days • Mar 1, 2026</p>
+                        </div>
+                    </div>
+                    <div class="reminder-card">
+                        <div class="reminder-icon">⚠️</div>
+                        <div class="reminder-content">
+                            <h4>Update Nominee - HDFC Bank</h4>
+                            <p>Nominee information missing</p>
+                        </div>
+                    </div>
+                    <div class="reminder-card">
+                        <div class="reminder-icon">📄</div>
+                        <div class="reminder-content">
+                            <h4>Upload Document - HDFC Bank</h4>
+                            <p>Document not uploaded</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom-nav">
+                <div class="bottom-nav-item" onclick="goToScreen('screen-home')">
+                    <div class="bottom-nav-icon">🏠</div>
+                    <div class="bottom-nav-label">Home</div>
+                </div>
+                <div class="bottom-nav-item" onclick="goToScreen('screen-asset-inventory')">
+                    <div class="bottom-nav-icon">📊</div>
+                    <div class="bottom-nav-label">Assets</div>
+                </div>
+                <div class="bottom-nav-item active">
+                    <div class="bottom-nav-icon">🔔</div>
+                    <div class="bottom-nav-label">Reminders</div>
+                </div>
+                <div class="bottom-nav-item" onclick="goToScreen('screen-trusted-members')">
+                    <div class="bottom-nav-icon">👥</div>
+                    <div class="bottom-nav-label">Family</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 15: Trusted Members -->
+        <div class="screen" id="screen-trusted-members">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header" style="text-align: left;">
+                    <h1>Trusted Members</h1>
+                    <p>You control who can access Emergency Mode.</p>
+                </div>
+                <div class="card" style="margin-top: 24px;">
+                    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 12px;">
+                        <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--soft); display: flex; align-items: center; justify-content: center; font-size: 28px;">👤</div>
+                        <div style="flex: 1;">
+                            <h4 style="font-size: 18px; font-weight: 700;">Priya Sharma</h4>
+                            <p style="color: var(--muted); font-size: 15px;">Spouse</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 8px; padding-top: 12px; border-top: 1px solid var(--border);">
+                        <div style="flex: 1; text-align: center; padding: 8px;">
+                            <div style="font-size: 14px; color: var(--muted);">Access Status</div>
+                            <div style="font-weight: 600; color: var(--good-text); margin-top: 4px;">Active</div>
+                        </div>
+                        <div style="flex: 1; text-align: center; padding: 8px; border-left: 1px solid var(--border);">
+                            <div style="font-size: 14px; color: var(--muted);">Last Access</div>
+                            <div style="font-weight: 600; margin-top: 4px;">Never</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 24px;">
+                    <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 12px;">Access Controls</h3>
+                    <div class="card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <div>
+                                <div style="font-weight: 600;">Emergency Access</div>
+                                <p class="microcopy">Timed unlock after 12 hours</p>
+                            </div>
+                            <div style="padding: 8px 16px; background: var(--primary); color: var(--primary-text); border-radius: 10px; font-size: 14px; font-weight: 600;">Enabled</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary">Add Trusted Member (Premium)</button>
+                <button class="btn btn-secondary" onclick="goToScreen('screen-audit-logs')">View Access History</button>
+            </div>
+        </div>
+
+        <!-- Screen 16: Emergency Pack -->
+        <div class="screen" id="screen-emergency-pack">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header">
+                    <h1>Emergency Pack</h1>
+                    <p>Everything your family needs — in one place.</p>
+                </div>
+                <div style="margin-top: 24px;">
+                    <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Asset Summary</h3>
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <div style="font-size: 16px; font-weight: 600; color: var(--muted);">Health Insurance</div>
+                                <div class="card-title" style="margin-top: 4px;">HDFC Ergo</div>
+                            </div>
+                            <div class="badge badge-success">✓ Doc</div>
+                        </div>
+                        <p style="color: var(--muted); font-size: 15px;">Policy: ****3456</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <div style="font-size: 16px; font-weight: 600; color: var(--muted);">Life Insurance</div>
+                                <div class="card-title" style="margin-top: 4px;">ICICI Prudential</div>
+                            </div>
+                            <div class="badge badge-success">✓ Doc</div>
+                        </div>
+                        <p style="color: var(--muted); font-size: 15px;">Policy: ****7890</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <div style="font-size: 16px; font-weight: 600; color: var(--muted);">Bank Account</div>
+                                <div class="card-title" style="margin-top: 4px;">HDFC Bank</div>
+                            </div>
+                            <div class="badge badge-warning">No Doc</div>
+                        </div>
+                        <p style="color: var(--muted); font-size: 15px;">A/c: ****1234</p>
+                    </div>
+                </div>
+                <div style="margin-top: 32px;">
+                    <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Emergency Contact</h3>
+                    <div class="card">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--soft); display: flex; align-items: center; justify-content: center; font-size: 24px;">📞</div>
+                            <div>
+                                <div style="font-weight: 600; font-size: 17px;">Rajesh Kumar</div>
+                                <p style="color: var(--muted);">Adult Child • +91 98765 43210</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 17: Certificate -->
+        <div class="screen" id="screen-certificate">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header">
+                    <h1>Emergency Ready Certificate</h1>
+                    <p>This certificate improves as you close gaps.</p>
+                </div>
+                <div class="certificate-section" style="margin-top: 24px;">
+                    <div class="certificate-icon">⚠️</div>
+                    <div class="certificate-status">Some Gaps</div>
+                    <p style="opacity: 0.9;">6 out of 10 items complete</p>
+                </div>
+                <div style="margin-top: 24px;">
+                    <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 16px;">Breakdown</h3>
+                    <div class="card" style="cursor: pointer;" onclick="goToScreen('screen-fix-health-gap')">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                            <div style="font-weight: 600;">HDFC Health Insurance</div>
+                            <div class="badge badge-warning">Gaps →</div>
+                        </div>
+                        <div style="font-size: 15px; color: var(--muted); line-height: 1.8;">
+                            ✅ Document uploaded<br>
+                            ❌ Nominee not marked<br>
+                            ✅ Renewal date added<br>
+                            ✅ Trusted access set
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                            <div style="font-weight: 600;">ICICI Life Insurance</div>
+                            <div class="badge badge-success">All Set</div>
+                        </div>
+                        <div style="font-size: 15px; color: var(--muted); line-height: 1.8;">
+                            ✅ Document uploaded<br>
+                            ✅ Nominee marked<br>
+                            ✅ Maturity date added<br>
+                            ✅ Trusted access set
+                        </div>
+                    </div>
+                    <div class="card" style="cursor: pointer;" onclick="goToScreen('screen-fix-bank-gap')">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                            <div style="font-weight: 600;">HDFC Bank</div>
+                            <div class="badge badge-danger">Needs Attention →</div>
+                        </div>
+                        <div style="font-size: 15px; color: var(--muted); line-height: 1.8;">
+                            ❌ Document missing<br>
+                            ❌ Nominee not marked<br>
+                            ✅ Account active<br>
+                            ✅ Trusted access set
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-fix-health-gap')">Start Fixing</button>
+            </div>
+        </div>
+
+        <!-- Screen 17A: Fix Health Insurance Gap -->
+        <div class="screen" id="screen-fix-health-gap">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-certificate')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header">
+                    <h1>HDFC Health Insurance</h1>
+                    <p>Fix gaps to improve your Emergency Ready status</p>
+                </div>
+                <div class="card" style="margin-top: 24px;">
+                    <div style="margin-bottom: 16px;">
+                        <div style="font-weight: 600; font-size: 17px; margin-bottom: 8px;">Provider</div>
+                        <div style="color: var(--muted);">HDFC Ergo</div>
+                    </div>
+                    <div style="margin-bottom: 16px;">
+                        <div style="font-weight: 600; font-size: 17px; margin-bottom: 8px;">Policy Number</div>
+                        <div style="color: var(--muted);">****3456</div>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; font-size: 17px; margin-bottom: 8px;">Renewal Date</div>
+                        <div style="color: var(--muted);">15 Feb 2026</div>
+                    </div>
+                </div>
+                <div style="margin-top: 24px;">
+                    <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--warn-text);">⚠️ Action Required</h3>
+                    <div class="input-group">
+                        <label>Update Nominee Status</label>
+                        <div class="toggle-group">
+                            <div class="toggle-btn">Yes</div>
+                            <div class="toggle-btn active">No</div>
+                            <div class="toggle-btn">Not Sure</div>
+                        </div>
+                        <p class="microcopy">Have you added a nominee to this policy?</p>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-certificate')">Save & Continue</button>
+            </div>
+        </div>
+
+        <!-- Screen 17B: Fix Bank Gap -->
+        <div class="screen" id="screen-fix-bank-gap">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-certificate')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header">
+                    <h1>HDFC Bank</h1>
+                    <p>Fix gaps to improve your Emergency Ready status</p>
+                </div>
+                <div class="card" style="margin-top: 24px;">
+                    <div style="margin-bottom: 16px;">
+                        <div style="font-weight: 600; font-size: 17px; margin-bottom: 8px;">Bank Name</div>
+                        <div style="color: var(--muted);">HDFC Bank</div>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; font-size: 17px; margin-bottom: 8px;">Account Number</div>
+                        <div style="color: var(--muted);">****1234</div>
+                    </div>
+                </div>
+                <div style="margin-top: 24px;">
+                    <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--bad-text);">🔴 Critical Gaps</h3>
+                    <div class="input-group">
+                        <label>Nominee Status</label>
+                        <div class="toggle-group">
+                            <div class="toggle-btn">Yes</div>
+                            <div class="toggle-btn active">No</div>
+                            <div class="toggle-btn">Not Sure</div>
+                        </div>
+                        <p class="microcopy">Have you added a nominee to this account?</p>
+                    </div>
+                    <div class="file-upload">
+                        <div class="file-upload-icon">📄</div>
+                        <p style="font-weight: 600; margin-bottom: 4px;">Upload Document</p>
+                        <p class="microcopy">Upload passbook or statement</p>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-certificate')">Save & Continue</button>
+            </div>
+        </div>
+
+        <!-- Screen 17C: Nominee Gap from Action Items -->
+        <div class="screen" id="screen-nominee-gap">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header">
+                    <h1>Update Nominees</h1>
+                    <p>2 assets need nominee information</p>
+                </div>
+                <div style="margin-top: 24px;">
+                    <div class="card" style="cursor: pointer; margin-bottom: 16px;" onclick="goToScreen('screen-fix-health-gap')">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-weight: 600; font-size: 17px; margin-bottom: 4px;">HDFC Health Insurance</div>
+                                <p style="color: var(--muted); font-size: 15px;">Policy: ****3456</p>
+                            </div>
+                            <div style="font-size: 20px; color: var(--muted);">→</div>
+                        </div>
+                    </div>
+                    <div class="card" style="cursor: pointer;" onclick="goToScreen('screen-fix-bank-gap')">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-weight: 600; font-size: 17px; margin-bottom: 4px;">HDFC Bank</div>
+                                <p style="color: var(--muted); font-size: 15px;">A/c: ****1234</p>
+                            </div>
+                            <div style="font-size: 20px; color: var(--muted);">→</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 17D: Renewal Reminder -->
+        <div class="screen" id="screen-renewal-reminder">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header">
+                    <h1>Renewal Reminder</h1>
+                    <p>Don't miss your policy renewal</p>
+                </div>
+                <div class="card" style="margin-top: 24px;">
+                    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+                        <div style="font-size: 48px;">📅</div>
+                        <div>
+                            <div style="font-weight: 700; font-size: 20px; margin-bottom: 4px;">HDFC Health Insurance</div>
+                            <p style="color: var(--warn-text); font-weight: 600;">Due in 7 days</p>
+                        </div>
+                    </div>
+                    <div style="padding-top: 16px; border-top: 1px solid var(--border);">
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-weight: 600; font-size: 15px; margin-bottom: 4px;">Renewal Date</div>
+                            <div style="color: var(--muted);">15 Feb 2026</div>
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-weight: 600; font-size: 15px; margin-bottom: 4px;">Policy Number</div>
+                            <div style="color: var(--muted);">****3456</div>
+                        </div>
+                        <div>
+                            <div style="font-weight: 600; font-size: 15px; margin-bottom: 4px;">Provider</div>
+                            <div style="color: var(--muted);">HDFC Ergo</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary">Mark as Renewed</button>
+                <button class="btn btn-secondary" onclick="goToScreen('screen-home')">Remind Me Later</button>
+            </div>
+        </div>
+
+        <!-- Screen 17E: Document Missing -->
+        <div class="screen" id="screen-document-missing">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header">
+                    <h1>Upload Documents</h1>
+                    <p>3 assets need document upload</p>
+                </div>
+                <div style="margin-top: 24px;">
+                    <div class="card" style="margin-bottom: 16px;">
+                        <div style="font-weight: 600; font-size: 17px; margin-bottom: 12px;">HDFC Bank</div>
+                        <div class="file-upload">
+                            <div class="file-upload-icon">📄</div>
+                            <p style="font-weight: 600; margin-bottom: 4px;">Upload Document</p>
+                        </div>
+                    </div>
+                    <div class="card" style="margin-bottom: 16px;">
+                        <div style="font-weight: 600; font-size: 17px; margin-bottom: 12px;">SBI Fixed Deposit</div>
+                        <div class="file-upload">
+                            <div class="file-upload-icon">📄</div>
+                            <p style="font-weight: 600; margin-bottom: 4px;">Upload Document</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-home')">Done</button>
+            </div>
+        </div>
+
+        <!-- Screen 18: Audit Logs -->
+        <div class="screen" id="screen-audit-logs">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-trusted-members')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header" style="text-align: left;">
+                    <h1>Access History</h1>
+                    <p>Every access attempt is recorded.</p>
+                </div>
+                <div style="margin-top: 24px; text-align: center; padding: 60px 20px;">
+                    <div style="font-size: 64px; margin-bottom: 16px; opacity: 0.5;">🔒</div>
+                    <h3 style="font-size: 20px; font-weight: 600; margin-bottom: 8px;">No Access Requests</h3>
+                    <p style="color: var(--muted);">When someone requests access, you'll see it here.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let otpTimer = null;
+        
+        function goToScreen(screenId) {
+            // Hide all screens
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => screen.classList.remove('active'));
+            
+            // Show target screen
+            const targetScreen = document.getElementById(screenId);
+            if (targetScreen) {
+                targetScreen.classList.add('active');
+                // Scroll to top
+                const content = targetScreen.querySelector('.screen-content');
+                if (content) {
+                    content.scrollTop = 0;
+                }
+                
+                // Start OTP timer if on OTP screen
+                if (screenId === 'screen-otp') {
+                    startOTPTimer();
+                }
+            }
+        }
+
+        function startOTPTimer() {
+            let timeLeft = 60;
+            const timerElement = document.getElementById('timer');
+            const resendBtn = document.getElementById('resend-btn');
+            
+            // Clear any existing timer
+            if (otpTimer) {
+                clearInterval(otpTimer);
+            }
+            
+            resendBtn.disabled = true;
+            
+            otpTimer = setInterval(() => {
+                timeLeft--;
+                timerElement.textContent = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(otpTimer);
+                    resendBtn.disabled = false;
+                }
+            }, 1000);
+        }
+
+        function resendOTP() {
+            startOTPTimer();
+        }
+
+        function showAssetTab(tabName) {
+            // Hide all asset lists
+            const allLists = ['all', 'insurance', 'banks', 'investments', 'loans'];
+            allLists.forEach(list => {
+                const element = document.getElementById('asset-list-' + list);
+                if (element) element.style.display = 'none';
+            });
+            
+            // Show selected list
+            const selectedList = document.getElementById('asset-list-' + tabName);
+            if (selectedList) selectedList.style.display = 'block';
+            
+            // Update active tab
+            const tabs = document.querySelectorAll('#screen-asset-inventory .tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // Initialize toggle buttons
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('toggle-btn') && e.target.parentElement.classList.contains('toggle-group')) {
+                const parent = e.target.parentElement;
+                const buttons = parent.querySelectorAll('.toggle-btn');
+                buttons.forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+            }
+        });
+
+        // OTP input auto-focus
+        document.addEventListener('DOMContentLoaded', () => {
+            const otpInputs = document.querySelectorAll('.otp-input');
+            
+            otpInputs.forEach((input, index) => {
+                input.addEventListener('input', (e) => {
+                    if (e.target.value.length === 1 && index < otpInputs.length - 1) {
+                        otpInputs[index + 1].focus();
+                    }
+                });
+                
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
+                        otpInputs[index - 1].focus();
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
