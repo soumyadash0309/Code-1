@@ -524,7 +524,7 @@
         .logo-icon {
             width: 56px;
             height: 56px;
-            background: linear-gradient(135deg, #0F172A 0%, #334155 100%);
+            background: linear-gradient(135deg, #0F172A 0%, #1e293b 100%);
             border-radius: 16px;
             display: flex;
             align-items: center;
@@ -542,25 +542,23 @@
             background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
         }
 
-        .logo-icon-text {
-            font-size: 26px;
-            font-weight: 800;
-            color: white;
+        .logo-icon-svg {
+            width: 32px;
+            height: 32px;
             z-index: 1;
-            font-family: ui-sans-serif, system-ui, -apple-system;
-            letter-spacing: -1px;
         }
 
         .header-logo-small {
             width: 40px;
             height: 40px;
-            background: linear-gradient(135deg, #0F172A 0%, #334155 100%);
+            background: linear-gradient(135deg, #0F172A 0%, #1e293b 100%);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             box-shadow: 0 2px 8px rgba(15, 23, 42, 0.15);
+            overflow: hidden;
         }
 
         .header-logo-small::before {
@@ -571,12 +569,10 @@
             background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
         }
 
-        .header-logo-text {
-            font-size: 18px;
-            font-weight: 800;
-            color: white;
+        .header-logo-svg {
+            width: 24px;
+            height: 24px;
             z-index: 1;
-            letter-spacing: -0.5px;
         }
 
         .logo-text {
@@ -690,6 +686,122 @@
             text-decoration: none;
             cursor: not-allowed;
         }
+
+        .nominee-details {
+            margin-top: 16px;
+            padding: 16px;
+            background: var(--soft);
+            border-radius: 12px;
+            border: 2px solid var(--border);
+        }
+
+        .nominee-details-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text2);
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 28px;
+            max-width: 360px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .modal-text {
+            color: var(--muted);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .modal-buttons .btn {
+            margin: 0;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--surface);
+            border-radius: 20px;
+            max-width: 400px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 24px;
+            position: relative;
+        }
+
+        .modal-header {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .modal-subtext {
+            font-size: 15px;
+            color: var(--muted);
+            margin-bottom: 24px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--muted);
+            padding: 4px;
+            line-height: 1;
+        }
     </style>
 </head>
 <body>
@@ -703,7 +815,11 @@
             <div class="screen-content">
                 <div class="logo" style="margin-top: 80px;">
                     <div class="logo-icon">
-                        <div class="logo-icon-text">FC</div>
+                        <svg class="logo-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L4 6V11C4 16.55 7.84 21.74 12 23C16.16 21.74 20 16.55 20 11V6L12 2Z" fill="white" opacity="0.9"/>
+                            <path d="M12 7L8 9.5V12.5C8 15.26 9.76 17.8 12 18.5C14.24 17.8 16 15.26 16 12.5V9.5L12 7Z" fill="#0F172A"/>
+                            <circle cx="12" cy="12" r="2" fill="white"/>
+                        </svg>
                     </div>
                     <div class="logo-text">FinCare</div>
                 </div>
@@ -726,7 +842,11 @@
             <div class="screen-content">
                 <div class="logo" style="margin-top: 60px;">
                     <div class="logo-icon">
-                        <div class="logo-icon-text">FC</div>
+                        <svg class="logo-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L4 6V11C4 16.55 7.84 21.74 12 23C16.16 21.74 20 16.55 20 11V6L12 2Z" fill="white" opacity="0.9"/>
+                            <path d="M12 7L8 9.5V12.5C8 15.26 9.76 17.8 12 18.5C14.24 17.8 16 15.26 16 12.5V9.5L12 7Z" fill="#0F172A"/>
+                            <circle cx="12" cy="12" r="2" fill="white"/>
+                        </svg>
                     </div>
                     <div class="logo-text">FinCare</div>
                 </div>
@@ -809,6 +929,14 @@
                     <label>Mobile Number</label>
                     <input type="tel" value="+91 9876543210" disabled style="opacity: 0.6;">
                 </div>
+                <div class="input-group">
+                    <label>Address (Optional)</label>
+                    <input type="text" placeholder="Enter your address">
+                </div>
+                <div class="input-group">
+                    <label>Aadhar Card Number (Optional)</label>
+                    <input type="text" placeholder="Enter 12-digit Aadhar number" maxlength="12">
+                </div>
             </div>
             <div class="nav-buttons">
                 <button class="btn btn-primary" onclick="goToScreen('screen-owner-profile-2')">Continue</button>
@@ -885,7 +1013,8 @@
                     <select>
                         <option value="">Select relationship</option>
                         <option value="spouse">Spouse</option>
-                        <option value="child">Adult Child</option>
+                        <option value="son">Son</option>
+                        <option value="daughter">Daughter</option>
                         <option value="sibling">Sibling</option>
                         <option value="parent">Parent</option>
                         <option value="friend">Friend</option>
@@ -922,7 +1051,7 @@
                             <div class="card-title">App Lock</div>
                             <p class="microcopy">PIN or Fingerprint</p>
                         </div>
-                        <div style="padding: 8px 16px; background: var(--primary); color: var(--primary-text); border-radius: 10px; font-size: 14px; font-weight: 600;">Enabled</div>
+                        <button class="btn btn-primary" style="margin: 0; padding: 10px 20px; font-size: 15px;" onclick="showAppLockModal()">Enable</button>
                     </div>
                 </div>
                 <div class="card">
@@ -931,12 +1060,56 @@
                             <div class="card-title">Recovery Method</div>
                             <p class="microcopy">OTP + Email</p>
                         </div>
-                        <div style="padding: 8px 16px; background: var(--primary); color: var(--primary-text); border-radius: 10px; font-size: 14px; font-weight: 600;">Enabled</div>
+                        <button class="btn btn-primary" style="margin: 0; padding: 10px 20px; font-size: 15px;" onclick="showRecoveryModal()">Enable</button>
                     </div>
                 </div>
             </div>
             <div class="nav-buttons">
                 <button class="btn btn-primary" onclick="goToScreen('screen-quick-start')">Continue</button>
+            </div>
+        </div>
+
+        <!-- App Lock Modal -->
+        <div class="modal-overlay" id="modal-app-lock">
+            <div class="modal-content">
+                <button class="close-modal" onclick="closeModal('modal-app-lock')">×</button>
+                <div class="modal-header">Set Up App Lock</div>
+                <div class="modal-subtext">Choose your preferred lock method</div>
+                <div class="input-group">
+                    <label>Lock Type</label>
+                    <div class="toggle-group">
+                        <div class="toggle-btn active">PIN</div>
+                        <div class="toggle-btn">Fingerprint</div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Enter 4-Digit PIN</label>
+                    <input type="password" placeholder="****" maxlength="4" pattern="[0-9]*">
+                </div>
+                <div class="input-group">
+                    <label>Confirm PIN</label>
+                    <input type="password" placeholder="****" maxlength="4" pattern="[0-9]*">
+                </div>
+                <button class="btn btn-primary" onclick="enableAppLock()">Enable App Lock</button>
+            </div>
+        </div>
+
+        <!-- Recovery Method Modal -->
+        <div class="modal-overlay" id="modal-recovery">
+            <div class="modal-content">
+                <button class="close-modal" onclick="closeModal('modal-recovery')">×</button>
+                <div class="modal-header">Set Up Recovery</div>
+                <div class="modal-subtext">This helps you recover access if you forget your PIN</div>
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" placeholder="your@email.com">
+                </div>
+                <div class="input-group">
+                    <label>Mobile Number</label>
+                    <input type="tel" value="+91 9876543210" disabled style="opacity: 0.6;">
+                    <p class="microcopy">OTP will be sent to this number</p>
+                </div>
+                <button class="btn btn-primary" onclick="enableRecovery()">Enable Recovery</button>
             </div>
         </div>
 
@@ -997,7 +1170,8 @@
                     <select>
                         <option value="">Select relationship</option>
                         <option value="spouse">Spouse</option>
-                        <option value="child">Adult Child</option>
+                        <option value="son">Son</option>
+                        <option value="daughter">Daughter</option>
                         <option value="sibling">Sibling</option>
                         <option value="parent">Parent</option>
                     </select>
@@ -1060,6 +1234,11 @@
                     <h1>Health Insurance</h1>
                     <p>Documents and nominee status reduce claim delays.</p>
                 </div>
+                <div class="file-upload">
+                    <div class="file-upload-icon">📄</div>
+                    <p style="font-weight: 600; margin-bottom: 4px;">Upload Document</p>
+                    <p class="microcopy">Upload a document to autofill instantly.</p>
+                </div>
                 <div class="input-group">
                     <label>Provider Name</label>
                     <input type="text" placeholder="e.g., HDFC Ergo">
@@ -1075,15 +1254,32 @@
                 <div class="input-group">
                     <label>Nominee Status</label>
                     <div class="toggle-group">
-                        <div class="toggle-btn active">Yes</div>
-                        <div class="toggle-btn">No</div>
-                        <div class="toggle-btn">Not Sure</div>
+                        <div class="toggle-btn active" onclick="toggleNomineeDetails('health', true)">Yes</div>
+                        <div class="toggle-btn" onclick="toggleNomineeDetails('health', false)">No</div>
+                        <div class="toggle-btn" onclick="toggleNomineeDetails('health', false)">Not Sure</div>
                     </div>
                 </div>
-                <div class="file-upload">
-                    <div class="file-upload-icon">📄</div>
-                    <p style="font-weight: 600; margin-bottom: 4px;">Upload Document</p>
-                    <p class="microcopy">Upload a document to autofill instantly.</p>
+                <div class="nominee-details" id="nominee-details-health">
+                    <div class="nominee-details-title">Nominee Information</div>
+                    <div class="input-group" style="margin-bottom: 12px;">
+                        <label>Nominee Name</label>
+                        <input type="text" placeholder="Enter nominee name">
+                    </div>
+                    <div class="input-group" style="margin-bottom: 12px;">
+                        <label>Relationship</label>
+                        <select>
+                            <option value="">Select relationship</option>
+                            <option value="spouse">Spouse</option>
+                            <option value="son">Son</option>
+                            <option value="daughter">Daughter</option>
+                            <option value="parent">Parent</option>
+                            <option value="sibling">Sibling</option>
+                        </select>
+                    </div>
+                    <div class="input-group" style="margin-bottom: 0;">
+                        <label>Nominee Mobile Number</label>
+                        <input type="tel" placeholder="+91 9876543210">
+                    </div>
                 </div>
             </div>
             <div class="nav-buttons">
@@ -1106,6 +1302,11 @@
                     <h1>Life Insurance</h1>
                     <p>Documents and nominee status reduce claim delays.</p>
                 </div>
+                <div class="file-upload">
+                    <div class="file-upload-icon">📄</div>
+                    <p style="font-weight: 600; margin-bottom: 4px;">Upload Document</p>
+                    <p class="microcopy">Upload a document to autofill instantly.</p>
+                </div>
                 <div class="input-group">
                     <label>Provider Name</label>
                     <input type="text" placeholder="e.g., ICICI Prudential">
@@ -1121,15 +1322,32 @@
                 <div class="input-group">
                     <label>Nominee Status</label>
                     <div class="toggle-group">
-                        <div class="toggle-btn active">Yes</div>
-                        <div class="toggle-btn">No</div>
-                        <div class="toggle-btn">Not Sure</div>
+                        <div class="toggle-btn active" onclick="toggleNomineeDetails('life', true)">Yes</div>
+                        <div class="toggle-btn" onclick="toggleNomineeDetails('life', false)">No</div>
+                        <div class="toggle-btn" onclick="toggleNomineeDetails('life', false)">Not Sure</div>
                     </div>
                 </div>
-                <div class="file-upload">
-                    <div class="file-upload-icon">📄</div>
-                    <p style="font-weight: 600; margin-bottom: 4px;">Upload Document</p>
-                    <p class="microcopy">Upload a document to autofill instantly.</p>
+                <div class="nominee-details" id="nominee-details-life">
+                    <div class="nominee-details-title">Nominee Information</div>
+                    <div class="input-group" style="margin-bottom: 12px;">
+                        <label>Nominee Name</label>
+                        <input type="text" placeholder="Enter nominee name">
+                    </div>
+                    <div class="input-group" style="margin-bottom: 12px;">
+                        <label>Relationship</label>
+                        <select>
+                            <option value="">Select relationship</option>
+                            <option value="spouse">Spouse</option>
+                            <option value="son">Son</option>
+                            <option value="daughter">Daughter</option>
+                            <option value="parent">Parent</option>
+                            <option value="sibling">Sibling</option>
+                        </select>
+                    </div>
+                    <div class="input-group" style="margin-bottom: 0;">
+                        <label>Nominee Mobile Number</label>
+                        <input type="tel" placeholder="+91 9876543210">
+                    </div>
                 </div>
             </div>
             <div class="nav-buttons">
@@ -1151,6 +1369,11 @@
                 <div class="header">
                     <h1>Bank Account</h1>
                     <p>Documents and nominee status reduce claim delays.</p>
+                </div>
+                <div class="file-upload">
+                    <div class="file-upload-icon">📄</div>
+                    <p style="font-weight: 600; margin-bottom: 4px;">Upload Document</p>
+                    <p class="microcopy">Upload passbook or statement to autofill.</p>
                 </div>
                 <div class="input-group">
                     <label>Bank Name</label>
@@ -1176,15 +1399,32 @@
                 <div class="input-group">
                     <label>Nominee Status</label>
                     <div class="toggle-group">
-                        <div class="toggle-btn active">Yes</div>
-                        <div class="toggle-btn">No</div>
-                        <div class="toggle-btn">Not Sure</div>
+                        <div class="toggle-btn active" onclick="toggleNomineeDetails('bank', true)">Yes</div>
+                        <div class="toggle-btn" onclick="toggleNomineeDetails('bank', false)">No</div>
+                        <div class="toggle-btn" onclick="toggleNomineeDetails('bank', false)">Not Sure</div>
                     </div>
                 </div>
-                <div class="file-upload">
-                    <div class="file-upload-icon">📄</div>
-                    <p style="font-weight: 600; margin-bottom: 4px;">Upload Document</p>
-                    <p class="microcopy">Upload passbook or statement to autofill.</p>
+                <div class="nominee-details" id="nominee-details-bank">
+                    <div class="nominee-details-title">Nominee Information</div>
+                    <div class="input-group" style="margin-bottom: 12px;">
+                        <label>Nominee Name</label>
+                        <input type="text" placeholder="Enter nominee name">
+                    </div>
+                    <div class="input-group" style="margin-bottom: 12px;">
+                        <label>Relationship</label>
+                        <select>
+                            <option value="">Select relationship</option>
+                            <option value="spouse">Spouse</option>
+                            <option value="son">Son</option>
+                            <option value="daughter">Daughter</option>
+                            <option value="parent">Parent</option>
+                            <option value="sibling">Sibling</option>
+                        </select>
+                    </div>
+                    <div class="input-group" style="margin-bottom: 0;">
+                        <label>Nominee Mobile Number</label>
+                        <input type="tel" placeholder="+91 9876543210">
+                    </div>
                 </div>
             </div>
             <div class="nav-buttons">
@@ -1230,7 +1470,11 @@
             <div class="header-with-icons">
                 <div class="header-left">
                     <div class="header-logo-small">
-                        <div class="header-logo-text">FC</div>
+                        <svg class="header-logo-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L4 6V11C4 16.55 7.84 21.74 12 23C16.16 21.74 20 16.55 20 11V6L12 2Z" fill="white" opacity="0.9"/>
+                            <path d="M12 7L8 9.5V12.5C8 15.26 9.76 17.8 12 18.5C14.24 17.8 16 15.26 16 12.5V9.5L12 7Z" fill="#0F172A"/>
+                            <circle cx="12" cy="12" r="2" fill="white"/>
+                        </svg>
                     </div>
                     <div class="header-title">FinCare</div>
                 </div>
@@ -1242,35 +1486,37 @@
             <div class="screen-content" style="padding-top: 16px;">
                 
                 <!-- Emergency Ready Certificate Card -->
-                <div class="certificate-section">
-                    <div class="certificate-icon">🛡️</div>
-                    <div class="certificate-status">Some Gaps</div>
-                    <p style="opacity: 0.9; margin-bottom: 16px;">This status is based on nominees, documents, renewals, and access setup.</p>
-                    <button class="btn" style="background: white; color: var(--primary); padding: 14px;" onclick="goToScreen('screen-certificate')">Fix Gaps</button>
+                <div class="certificate-section" id="certificate-card">
+                    <div class="certificate-icon" id="cert-icon">⚠️</div>
+                    <div class="certificate-status" id="cert-status">Some Gaps</div>
+                    <p style="opacity: 0.9; margin-bottom: 16px;" id="cert-subheading">This status is based on nominees, documents, renewals, and access setup in your Emergency Ready Certificate.</p>
+                    <button class="btn" id="cert-cta" style="background: white; color: var(--primary); padding: 14px;" onclick="goToScreen('screen-certificate')">Fix Gaps</button>
                 </div>
 
                 <!-- Readiness Steps -->
-                <div style="margin-bottom: 24px;">
+                <div style="margin-bottom: 24px;" id="action-items-section">
                     <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Action Items</h3>
-                    <div class="reminder-card" style="cursor: pointer;" onclick="goToScreen('screen-nominee-gap')">
-                        <div class="reminder-icon">⚠️</div>
-                        <div class="reminder-content">
-                            <h4>Nominee missing in 2 assets</h4>
-                            <p>Update to reduce claim delays</p>
+                    <div id="action-items-container">
+                        <div class="reminder-card" style="cursor: pointer;" onclick="goToScreen('screen-nominee-gap')" id="action-nominee">
+                            <div class="reminder-icon">⚠️</div>
+                            <div class="reminder-content">
+                                <h4>Nominee missing in 2 assets</h4>
+                                <p>Update to reduce claim delays</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="reminder-card" style="cursor: pointer;" onclick="goToScreen('screen-renewal-reminder')">
-                        <div class="reminder-icon">📅</div>
-                        <div class="reminder-content">
-                            <h4>1 renewal due in 7 days</h4>
-                            <p>Health insurance renewal approaching</p>
+                        <div class="reminder-card" style="cursor: pointer;" onclick="goToScreen('screen-renewal-reminder')" id="action-renewal">
+                            <div class="reminder-icon">📅</div>
+                            <div class="reminder-content">
+                                <h4>1 renewal due in 7 days</h4>
+                                <p>Health insurance renewal approaching</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="reminder-card" style="cursor: pointer;" onclick="goToScreen('screen-document-missing')">
-                        <div class="reminder-icon">📄</div>
-                        <div class="reminder-content">
-                            <h4>3 documents missing</h4>
-                            <p>Upload to complete your records</p>
+                        <div class="reminder-card" style="cursor: pointer;" onclick="goToScreen('screen-document-missing')" id="action-document">
+                            <div class="reminder-icon">📄</div>
+                            <div class="reminder-content">
+                                <h4>3 documents missing</h4>
+                                <p>Upload to complete your records</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1279,17 +1525,17 @@
                 <div style="margin-bottom: 24px;">
                     <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Your Assets</h3>
                     <div class="asset-type-grid">
-                        <div class="asset-type-btn" onclick="goToScreen('screen-asset-inventory')">
+                        <div class="asset-type-btn" onclick="goToAssetTab('insurance')">
                             <div class="asset-icon">🏥</div>
                             <div>Insurance</div>
                             <p style="font-size: 14px; color: var(--muted); margin-top: 4px;">3 items</p>
                         </div>
-                        <div class="asset-type-btn">
+                        <div class="asset-type-btn" onclick="goToAssetTab('banks')">
                             <div class="asset-icon">🏦</div>
                             <div>Banks</div>
                             <p style="font-size: 14px; color: var(--muted); margin-top: 4px;">2 items</p>
                         </div>
-                        <div class="asset-type-btn">
+                        <div class="asset-type-btn" onclick="goToAssetTab('investments')">
                             <div class="asset-icon">💰</div>
                             <div>Investments</div>
                             <p style="font-size: 14px; color: var(--muted); margin-top: 4px;">1 item</p>
@@ -1644,38 +1890,74 @@
                     <p>FinCare keeps your finances updated automatically.</p>
                 </div>
                 <div class="tabs">
-                    <div class="tab active">All</div>
-                    <div class="tab">Renewals</div>
-                    <div class="tab">Maturities</div>
-                    <div class="tab">Nominees</div>
+                    <div class="tab active" onclick="showReminderTab('all')">All</div>
+                    <div class="tab" onclick="showReminderTab('renewals')">Renewals</div>
+                    <div class="tab" onclick="showReminderTab('maturities')">Maturities</div>
+                    <div class="tab" onclick="showReminderTab('nominees')">Nominees</div>
                 </div>
                 <div style="margin-top: 20px;">
-                    <div class="reminder-card">
-                        <div class="reminder-icon">📅</div>
-                        <div class="reminder-content">
-                            <h4>HDFC Health Insurance Renewal</h4>
-                            <p>Due in 7 days • Feb 15, 2026</p>
+                    <div id="reminder-list-all">
+                        <div class="reminder-card" style="cursor: pointer;" onclick="goToScreen('screen-renewal-reminder')">
+                            <div class="reminder-icon">📅</div>
+                            <div class="reminder-content">
+                                <h4>HDFC Health Insurance Renewal</h4>
+                                <p>Due in 7 days • Feb 15, 2026</p>
+                            </div>
+                        </div>
+                        <div class="reminder-card" style="cursor: pointer;" onclick="goToScreen('screen-maturity-reminder')">
+                            <div class="reminder-icon">💰</div>
+                            <div class="reminder-content">
+                                <h4>SBI Fixed Deposit Maturity</h4>
+                                <p>Due in 22 days • Mar 1, 2026</p>
+                            </div>
+                        </div>
+                        <div class="reminder-card" style="cursor: pointer;" onclick="goToScreen('screen-fix-bank-gap')">
+                            <div class="reminder-icon">⚠️</div>
+                            <div class="reminder-content">
+                                <h4>Update Nominee - HDFC Bank</h4>
+                                <p>Nominee information missing</p>
+                            </div>
+                        </div>
+                        <div class="reminder-card" style="cursor: pointer;" onclick="goToScreen('screen-document-missing')">
+                            <div class="reminder-icon">📄</div>
+                            <div class="reminder-content">
+                                <h4>Upload Document - HDFC Bank</h4>
+                                <p>Document not uploaded</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="reminder-card">
-                        <div class="reminder-icon">💰</div>
-                        <div class="reminder-content">
-                            <h4>SBI Fixed Deposit Maturity</h4>
-                            <p>Due in 22 days • Mar 1, 2026</p>
+                    <div id="reminder-list-renewals" style="display: none;">
+                        <div class="reminder-card" style="cursor: pointer;" onclick="goToScreen('screen-renewal-reminder')">
+                            <div class="reminder-icon">📅</div>
+                            <div class="reminder-content">
+                                <h4>HDFC Health Insurance Renewal</h4>
+                                <p>Due in 7 days • Feb 15, 2026</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="reminder-card">
-                        <div class="reminder-icon">⚠️</div>
-                        <div class="reminder-content">
-                            <h4>Update Nominee - HDFC Bank</h4>
-                            <p>Nominee information missing</p>
+                    <div id="reminder-list-maturities" style="display: none;">
+                        <div class="reminder-card" style="cursor: pointer;" onclick="goToScreen('screen-maturity-reminder')">
+                            <div class="reminder-icon">💰</div>
+                            <div class="reminder-content">
+                                <h4>SBI Fixed Deposit Maturity</h4>
+                                <p>Due in 22 days • Mar 1, 2026</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="reminder-card">
-                        <div class="reminder-icon">📄</div>
-                        <div class="reminder-content">
-                            <h4>Upload Document - HDFC Bank</h4>
-                            <p>Document not uploaded</p>
+                    <div id="reminder-list-nominees" style="display: none;">
+                        <div class="reminder-card" style="cursor: pointer;" onclick="goToScreen('screen-fix-bank-gap')">
+                            <div class="reminder-icon">⚠️</div>
+                            <div class="reminder-content">
+                                <h4>Update Nominee - HDFC Bank</h4>
+                                <p>Nominee information missing</p>
+                            </div>
+                        </div>
+                        <div class="reminder-card" style="cursor: pointer;" onclick="goToScreen('screen-fix-health-gap')">
+                            <div class="reminder-icon">⚠️</div>
+                            <div class="reminder-content">
+                                <h4>Update Nominee - HDFC Health Insurance</h4>
+                                <p>Nominee information missing</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1802,7 +2084,7 @@
                             <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--soft); display: flex; align-items: center; justify-content: center; font-size: 24px;">📞</div>
                             <div>
                                 <div style="font-weight: 600; font-size: 17px;">Rajesh Kumar</div>
-                                <p style="color: var(--muted);">Adult Child • +91 98765 43210</p>
+                                <p style="color: var(--muted);">Son • +91 98765 43210</p>
                             </div>
                         </div>
                     </div>
@@ -1901,18 +2183,39 @@
                 <div style="margin-top: 24px;">
                     <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--warn-text);">⚠️ Action Required</h3>
                     <div class="input-group">
-                        <label>Update Nominee Status</label>
+                        <label style="font-size: 17px; font-weight: 600;">Have you added a nominee to this policy?</label>
                         <div class="toggle-group">
-                            <div class="toggle-btn">Yes</div>
-                            <div class="toggle-btn active">No</div>
-                            <div class="toggle-btn">Not Sure</div>
+                            <div class="toggle-btn" onclick="toggleNomineeDetails('fix-health', true)">Yes</div>
+                            <div class="toggle-btn active" onclick="toggleNomineeDetails('fix-health', false)">No</div>
+                            <div class="toggle-btn" onclick="toggleNomineeDetails('fix-health', false)">Not Sure</div>
                         </div>
-                        <p class="microcopy">Have you added a nominee to this policy?</p>
+                    </div>
+                    <div class="nominee-details" id="nominee-details-fix-health" style="display: none;">
+                        <div class="nominee-details-title">Nominee Information</div>
+                        <div class="input-group" style="margin-bottom: 12px;">
+                            <label>Nominee Name</label>
+                            <input type="text" placeholder="Enter nominee name" id="health-nominee-name">
+                        </div>
+                        <div class="input-group" style="margin-bottom: 12px;">
+                            <label>Relationship</label>
+                            <select id="health-nominee-relation">
+                                <option value="">Select relationship</option>
+                                <option value="spouse">Spouse</option>
+                                <option value="son">Son</option>
+                                <option value="daughter">Daughter</option>
+                                <option value="parent">Parent</option>
+                                <option value="sibling">Sibling</option>
+                            </select>
+                        </div>
+                        <div class="input-group" style="margin-bottom: 0;">
+                            <label>Nominee Mobile Number</label>
+                            <input type="tel" placeholder="+91 9876543210" id="health-nominee-mobile">
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="nav-buttons">
-                <button class="btn btn-primary" onclick="goToScreen('screen-certificate')">Save & Continue</button>
+                <button class="btn btn-primary" onclick="saveHealthNominee()">Save & Continue</button>
             </div>
         </div>
 
@@ -1941,23 +2244,46 @@
                 <div style="margin-top: 24px;">
                     <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--bad-text);">🔴 Critical Gaps</h3>
                     <div class="input-group">
-                        <label>Nominee Status</label>
+                        <label style="font-size: 17px; font-weight: 600;">Have you added a nominee to this account?</label>
                         <div class="toggle-group">
-                            <div class="toggle-btn">Yes</div>
-                            <div class="toggle-btn active">No</div>
-                            <div class="toggle-btn">Not Sure</div>
+                            <div class="toggle-btn" onclick="toggleNomineeDetails('fix-bank', true)">Yes</div>
+                            <div class="toggle-btn active" onclick="toggleNomineeDetails('fix-bank', false)">No</div>
+                            <div class="toggle-btn" onclick="toggleNomineeDetails('fix-bank', false)">Not Sure</div>
                         </div>
-                        <p class="microcopy">Have you added a nominee to this account?</p>
                     </div>
-                    <div class="file-upload">
-                        <div class="file-upload-icon">📄</div>
-                        <p style="font-weight: 600; margin-bottom: 4px;">Upload Document</p>
-                        <p class="microcopy">Upload passbook or statement</p>
+                    <div class="nominee-details" id="nominee-details-fix-bank" style="display: none;">
+                        <div class="nominee-details-title">Nominee Information</div>
+                        <div class="input-group" style="margin-bottom: 12px;">
+                            <label>Nominee Name</label>
+                            <input type="text" placeholder="Enter nominee name" id="bank-nominee-name">
+                        </div>
+                        <div class="input-group" style="margin-bottom: 12px;">
+                            <label>Relationship</label>
+                            <select id="bank-nominee-relation">
+                                <option value="">Select relationship</option>
+                                <option value="spouse">Spouse</option>
+                                <option value="son">Son</option>
+                                <option value="daughter">Daughter</option>
+                                <option value="parent">Parent</option>
+                                <option value="sibling">Sibling</option>
+                            </select>
+                        </div>
+                        <div class="input-group" style="margin-bottom: 0;">
+                            <label>Nominee Mobile Number</label>
+                            <input type="tel" placeholder="+91 9876543210" id="bank-nominee-mobile">
+                        </div>
+                    </div>
+                    <div class="input-group" style="margin-top: 20px;">
+                        <label style="font-size: 17px; font-weight: 600;">Upload Document</label>
+                        <div class="file-upload">
+                            <div class="file-upload-icon">📄</div>
+                            <p style="font-weight: 600; margin-bottom: 4px;">Upload Passbook or Statement</p>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="nav-buttons">
-                <button class="btn btn-primary" onclick="goToScreen('screen-certificate')">Save & Continue</button>
+                <button class="btn btn-primary" onclick="saveBankDetails()">Save & Continue</button>
             </div>
         </div>
 
@@ -2033,8 +2359,66 @@
                 </div>
             </div>
             <div class="nav-buttons">
-                <button class="btn btn-primary">Mark as Renewed</button>
+                <button class="btn btn-primary" onclick="markRenewalDone()">Mark as Renewed</button>
                 <button class="btn btn-secondary" onclick="goToScreen('screen-home')">Remind Me Later</button>
+            </div>
+        </div>
+
+        <!-- Screen 17D2: Maturity Reminder -->
+        <div class="screen" id="screen-maturity-reminder">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-reminders')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header">
+                    <h1>Maturity Reminder</h1>
+                    <p>Your fixed deposit is maturing soon</p>
+                </div>
+                <div class="card" style="margin-top: 24px;">
+                    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+                        <div style="font-size: 48px;">💰</div>
+                        <div>
+                            <div style="font-weight: 700; font-size: 20px; margin-bottom: 4px;">SBI Fixed Deposit</div>
+                            <p style="color: var(--good-text); font-weight: 600;">Matures in 22 days</p>
+                        </div>
+                    </div>
+                    <div style="padding-top: 16px; border-top: 1px solid var(--border);">
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-weight: 600; font-size: 15px; margin-bottom: 4px;">Maturity Date</div>
+                            <div style="color: var(--muted);">01 Mar 2026</div>
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-weight: 600; font-size: 15px; margin-bottom: 4px;">Account Number</div>
+                            <div style="color: var(--muted);">****5678</div>
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-weight: 600; font-size: 15px; margin-bottom: 4px;">Principal Amount</div>
+                            <div style="color: var(--muted);">₹5,00,000</div>
+                        </div>
+                        <div>
+                            <div style="font-weight: 600; font-size: 15px; margin-bottom: 4px;">Bank</div>
+                            <div style="color: var(--muted);">State Bank of India</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 24px;">
+                    <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 12px;">What would you like to do?</h3>
+                    <div class="input-group">
+                        <label>Action on Maturity</label>
+                        <select>
+                            <option value="">Select action</option>
+                            <option value="renew">Renew FD</option>
+                            <option value="withdraw">Withdraw Amount</option>
+                            <option value="decide">Decide Later</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-reminders')">Save Preference</button>
+                <button class="btn btn-secondary" onclick="goToScreen('screen-reminders')">Remind Me Later</button>
             </div>
         </div>
 
@@ -2068,7 +2452,7 @@
                 </div>
             </div>
             <div class="nav-buttons">
-                <button class="btn btn-primary" onclick="goToScreen('screen-home')">Done</button>
+                <button class="btn btn-primary" onclick="markDocumentsDone()">Done</button>
             </div>
         </div>
 
@@ -2096,6 +2480,16 @@
 
     <script>
         let otpTimer = null;
+        let appState = {
+            nomineeFixed: 0,
+            documentsUploaded: 0,
+            renewalMarked: false,
+            totalGaps: 10,
+            completedItems: 4,
+            healthNomineeFixed: false,
+            bankNomineeFixed: false,
+            bankDocumentFixed: false
+        };
         
         function goToScreen(screenId) {
             // Hide all screens
@@ -2116,7 +2510,199 @@
                 if (screenId === 'screen-otp') {
                     startOTPTimer();
                 }
+
+                // Update certificate when going to home or certificate
+                if (screenId === 'screen-home') {
+                    updateCertificateStatus();
+                    updateActionItems();
+                }
+                if (screenId === 'screen-certificate') {
+                    updateCertificateBreakdown();
+                }
             }
+        }
+
+        function goToAssetTab(tabName) {
+            // Save the tab to show
+            sessionStorage.setItem('assetTab', tabName);
+            goToScreen('screen-asset-inventory');
+            setTimeout(() => {
+                showAssetTab(tabName);
+            }, 100);
+        }
+
+        function updateCertificateStatus() {
+            const certIcon = document.getElementById('cert-icon');
+            const certStatus = document.getElementById('cert-status');
+            const certSubheading = document.getElementById('cert-subheading');
+            const certCta = document.getElementById('cert-cta');
+            const certCard = document.getElementById('certificate-card');
+
+            const incompleteItems = appState.totalGaps - appState.completedItems;
+
+            // Update subheading
+            if (certSubheading) {
+                if (incompleteItems === 0) {
+                    certSubheading.textContent = 'All items complete in your Emergency Ready Certificate.';
+                } else {
+                    certSubheading.textContent = `${incompleteItems} out of ${appState.totalGaps} items incomplete.`;
+                }
+            }
+
+            if (appState.completedItems >= appState.totalGaps) {
+                // All set
+                certIcon.textContent = '✅';
+                certStatus.textContent = 'All Set';
+                certCard.style.background = 'linear-gradient(135deg, #065F46 0%, #047857 100%)';
+                if (certCta) certCta.style.display = 'none';
+            } else if (appState.completedItems <= 2) {
+                // Needs attention
+                certIcon.textContent = '🔴';
+                certStatus.textContent = 'Needs Attention';
+                certCard.style.background = 'linear-gradient(135deg, #9F1239 0%, #BE123C 100%)';
+                if (certCta) {
+                    certCta.textContent = 'Fix Now';
+                    certCta.style.display = 'block';
+                }
+            } else {
+                // Some gaps
+                certIcon.textContent = '⚠️';
+                certStatus.textContent = 'Some Gaps';
+                certCard.style.background = 'linear-gradient(135deg, #0F172A 0%, #1e293b 100%)';
+                if (certCta) {
+                    certCta.textContent = 'Fix Gaps';
+                    certCta.style.display = 'block';
+                }
+            }
+        }
+
+        function updateCertificateBreakdown() {
+            // Update health insurance status in breakdown
+            const healthCard = document.querySelector('#screen-certificate .card:nth-of-type(1)');
+            if (healthCard && appState.healthNomineeFixed) {
+                const badge = healthCard.querySelector('.badge');
+                const details = healthCard.querySelector('div[style*="line-height: 1.8"]');
+                badge.className = 'badge badge-success';
+                badge.textContent = 'All Set';
+                if (details) {
+                    details.innerHTML = `
+                        ✅ Document uploaded<br>
+                        ✅ Nominee marked<br>
+                        ✅ Renewal date added<br>
+                        ✅ Trusted access set
+                    `;
+                }
+                healthCard.style.cursor = 'default';
+                healthCard.onclick = null;
+            }
+
+            // Update bank status in breakdown
+            const bankCard = document.querySelector('#screen-certificate .card:nth-of-type(3)');
+            if (bankCard && appState.bankNomineeFixed && appState.bankDocumentFixed) {
+                const badge = bankCard.querySelector('.badge');
+                const details = bankCard.querySelector('div[style*="line-height: 1.8"]');
+                badge.className = 'badge badge-success';
+                badge.textContent = 'All Set';
+                if (details) {
+                    details.innerHTML = `
+                        ✅ Document uploaded<br>
+                        ✅ Nominee marked<br>
+                        ✅ Account active<br>
+                        ✅ Trusted access set
+                    `;
+                }
+                bankCard.style.cursor = 'default';
+                bankCard.onclick = null;
+            }
+        }
+
+        function saveHealthNominee() {
+            const hasNominee = document.querySelector('#nominee-details-fix-health')?.style.display !== 'none';
+            if (hasNominee) {
+                appState.healthNomineeFixed = true;
+                appState.nomineeFixed += 1;
+                appState.completedItems += 1;
+            }
+            goToScreen('screen-certificate');
+        }
+
+        function saveBankDetails() {
+            const hasNominee = document.querySelector('#nominee-details-fix-bank')?.style.display !== 'none';
+            if (hasNominee) {
+                appState.bankNomineeFixed = true;
+                appState.nomineeFixed += 1;
+                appState.completedItems += 1;
+            }
+            appState.bankDocumentFixed = true;
+            appState.documentsUploaded += 1;
+            appState.completedItems += 1;
+            goToScreen('screen-certificate');
+        }
+
+        function updateActionItems() {
+            const actionNominee = document.getElementById('action-nominee');
+            const actionRenewal = document.getElementById('action-renewal');
+            const actionDocument = document.getElementById('action-document');
+            const actionSection = document.getElementById('action-items-section');
+
+            // Hide fixed items
+            if (appState.nomineeFixed >= 2 && actionNominee) {
+                actionNominee.style.display = 'none';
+            }
+            if (appState.renewalMarked && actionRenewal) {
+                actionRenewal.style.display = 'none';
+            }
+            if (appState.documentsUploaded >= 3 && actionDocument) {
+                actionDocument.style.display = 'none';
+            }
+
+            // Hide entire section if all done
+            const visibleItems = document.querySelectorAll('#action-items-container .reminder-card:not([style*="display: none"])');
+            if (visibleItems.length === 0 && actionSection) {
+                actionSection.style.display = 'none';
+            }
+        }
+
+        function markRenewalDone() {
+            appState.renewalMarked = true;
+            appState.completedItems += 1;
+            goToScreen('screen-home');
+        }
+
+        function markDocumentsDone() {
+            appState.documentsUploaded = 3;
+            appState.completedItems += 1;
+            goToScreen('screen-home');
+        }
+
+        function toggleNomineeDetails(formId, show) {
+            const detailsDiv = document.getElementById('nominee-details-' + formId);
+            if (detailsDiv) {
+                detailsDiv.style.display = show ? 'block' : 'none';
+            }
+        }
+
+        // Modal functions
+        function showAppLockModal() {
+            document.getElementById('modal-app-lock').classList.add('active');
+        }
+
+        function showRecoveryModal() {
+            document.getElementById('modal-recovery').classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function enableAppLock() {
+            closeModal('modal-app-lock');
+            // Could add visual feedback here
+        }
+
+        function enableRecovery() {
+            closeModal('modal-recovery');
+            // Could add visual feedback here
         }
 
         function startOTPTimer() {
@@ -2124,7 +2710,6 @@
             const timerElement = document.getElementById('timer');
             const resendBtn = document.getElementById('resend-btn');
             
-            // Clear any existing timer
             if (otpTimer) {
                 clearInterval(otpTimer);
             }
@@ -2147,24 +2732,48 @@
         }
 
         function showAssetTab(tabName) {
-            // Hide all asset lists
             const allLists = ['all', 'insurance', 'banks', 'investments', 'loans'];
             allLists.forEach(list => {
                 const element = document.getElementById('asset-list-' + list);
                 if (element) element.style.display = 'none';
             });
             
-            // Show selected list
             const selectedList = document.getElementById('asset-list-' + tabName);
             if (selectedList) selectedList.style.display = 'block';
             
-            // Update active tab
             const tabs = document.querySelectorAll('#screen-asset-inventory .tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            tabs.forEach(tab => {
+                if (tab.textContent.toLowerCase().includes(tabName.toLowerCase()) || 
+                    (tabName === 'all' && tab.textContent === 'All')) {
+                    tab.classList.add('active');
+                }
+            });
+        }
+
+        function goToAssetTab(tabName) {
+            goToScreen('screen-asset-inventory');
+            setTimeout(() => {
+                showAssetTab(tabName);
+            }, 100);
+        }
+
+        function showReminderTab(tabName) {
+            const allLists = ['all', 'renewals', 'maturities', 'nominees'];
+            allLists.forEach(list => {
+                const element = document.getElementById('reminder-list-' + list);
+                if (element) element.style.display = 'none';
+            });
+            
+            const selectedList = document.getElementById('reminder-list-' + tabName);
+            if (selectedList) selectedList.style.display = 'block';
+            
+            const tabs = document.querySelectorAll('#screen-reminders .tab');
             tabs.forEach(tab => tab.classList.remove('active'));
             event.target.classList.add('active');
         }
 
-        // Initialize toggle buttons
         document.addEventListener('click', (e) => {
             if (e.target.classList.contains('toggle-btn') && e.target.parentElement.classList.contains('toggle-group')) {
                 const parent = e.target.parentElement;
@@ -2172,9 +2781,13 @@
                 buttons.forEach(btn => btn.classList.remove('active'));
                 e.target.classList.add('active');
             }
+
+            // Close modal on overlay click
+            if (e.target.classList.contains('modal-overlay')) {
+                e.target.classList.remove('active');
+            }
         });
 
-        // OTP input auto-focus
         document.addEventListener('DOMContentLoaded', () => {
             const otpInputs = document.querySelectorAll('.otp-input');
             
@@ -2191,6 +2804,8 @@
                     }
                 });
             });
+
+            updateCertificateStatus();
         });
     </script>
 </body>
