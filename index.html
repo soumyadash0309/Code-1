@@ -467,7 +467,568 @@
  <button class="btn btn-primary" onclick="goToScreen('screen-home')">Proceed</button>
  </div>
  </div>
-<!-- HOME SCREEN (with all improvements) --> <div class="screen" id="screen-home"> <div class="status-bar"> <span>9:41</span> <span>100%</span> </div> <div class="header-with-icons"> <div class="header-left"> <div class="header-logo-small"> <svg class="header-logo-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M12 2L4 6V11C4 16.55 7.84 21.74 12 23C16.16 21.74 20 16.55 20 11V6L12 2Z" fill="white" opacity="0.9"/> <path d="M12 7L8 9.5V12.5C8 15.26 9.76 17.8 12 18.5C14.24 17.8 16 15.26 16 12.5V9.5L12 7Z" fill="#0F172A"/> <circle cx="12" cy="12" r="2" fill="white"/> </svg> </div> <div class="header-title">FinCare</div> </div> <div class="profile-pic" onclick="showProfileMenu()" style="cursor: pointer;">RK</div> </div> <div class="screen-content" style="padding-top: 16px;"> <!-- 1. App Lock Card --> <div class="card" style="margin-bottom: 20px;" id="app-lock-card"> <div style="display: flex; justify-content: space-between; align-items: center;"> <div style="flex: 1;"> <div style="font-weight: 700; font-size: 18px; margin-bottom: 4px;">Secure FinCare with App Lock</div> <p style="color: var(--muted); font-size: 15px;">Recommended for added security</p> </div> <div class="toggle-switch" id="applock-toggle" onclick="toggleAppLock()"> <div class="toggle-slider"></div> </div> </div> </div> <!-- 2. Certificate with Warning Icon --> <div class="certificate-section warning" id="certificate-card" style="cursor: pointer;" onclick="goToScreen('screen-certificate')"> <svg class="icon-large" style="fill: white; margin-bottom: 16px;" viewBox="0 0 24 24"> <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/> </svg> <div class="certificate-status">Some Gaps</div> <p style="opacity: 0.9; margin-bottom: 0;">4 out of 10 items incomplete in your Emergency Ready Certificate</p> </div> <!-- 3. Emergency Pack --> <div class="card" style="margin-bottom: 20px; cursor: pointer;" onclick="goToScreen('screen-emergency-pack')"> <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;"> <div> <div style="font-weight: 700; font-size: 19px; margin-bottom: 6px;">Emergency Pack</div> <p style="color: var(--good-text); font-size: 14px; font-weight: 600;">✓ Ready</p> </div> <svg style="width: 40px; height: 40px; fill: var(--primary);" viewBox="0 0 24 24"> <path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2z"/> </svg> </div> <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid var(--border);"> <p style="color: var(--muted); font-size: 14px;">Last updated: Today</p> <p style="color: var(--primary); font-weight: 600; font-size: 15px;">View Pack →</p> </div> </div> <!-- 4. Readiness Steps --> <div style="margin-bottom: 24px;"> <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Readiness Steps</h3> <div class="reminder-card" style="cursor: pointer;" onclick="goToScreen('screen-nominee-gap')"> <div class="reminder-icon">⚠️</div> <div class="reminder-content" style="flex: 1;"> <h4>Nominee missing in 2 assets</h4> <p>Tap to fix</p> </div> <button class="btn btn-primary" style="margin: 0; padding: 10px 20px; font-size: 14px; width: auto;" onclick="event.stopPropagation(); goToScreen('screen-nominee-gap')">Fix</button> </div> </div> </div> <div class="bottom-nav"> <div class="bottom-nav-item active"> <div class="bottom-nav-icon">🏠</div> <div class="bottom-nav-label">Home</div> </div> <div class="bottom-nav-item" onclick="goToScreen('screen-assets')"> <div class="bottom-nav-icon">📊</div> <div class="bottom-nav-label">Assets</div> </div> <div class="bottom-nav-item" onclick="goToScreen('screen-reminders')"> <div class="bottom-nav-icon">🔔</div> <div class="bottom-nav-label">Reminders</div> </div> <div class="bottom-nav-item" onclick="goToScreen('screen-members')"> <div class="bottom-nav-icon">👥</div> <div class="bottom-nav-label">Family</div> </div> </div> </div> <!-- ASSETS SCREEN (with improved details) --> <div class="screen" id="screen-assets"> <div class="status-bar"> <span>9:41</span> <span>100%</span> </div> <button class="back-btn" onclick="goToScreen('screen-home')">←</button> <div class="screen-content" style="padding-top: 60px;"> <div class="header" style="text-align: left; padding: 16px 0;"> <h1>Assets</h1> <p>Manage your financial assets</p> </div> <div class="tabs"> <div class="tab active" onclick="showAssetTab('all')">All</div> <div class="tab" onclick="showAssetTab('insurance')">Insurance</div> <div class="tab" onclick="showAssetTab('banks')">Banks</div> </div> <div id="asset-list-all"> <div class="asset-item" onclick="showAssetDetails('health-1')"> <div class="asset-info"> <h4>HDFC Health Insurance</h4> <p>****3456 • Feb 15, 2026</p> </div> <div class="badge badge-warning">No Nominee</div> </div> <div class="asset-item" onclick="showAssetDetails('bank-1')"> <div class="asset-info"> <h4>HDFC Bank</h4> <p>****1234</p> </div> <div class="badge badge-danger">Missing Doc</div> </div> </div> <div id="asset-list-insurance" style="display: none;"> <div class="asset-item" onclick="showAssetDetails('health-1')"> <div class="asset-info"> <h4>HDFC Health Insurance</h4> <p>****3456</p> </div> <div class="badge badge-warning">No Nominee</div> </div> </div> <div id="asset-list-banks" style="display: none;"> <div class="asset-item" onclick="showAssetDetails('bank-1')"> <div class="asset-info"> <h4>HDFC Bank</h4> <p>****1234</p> </div> <div class="badge badge-danger">Missing Doc</div> </div> </div> </div> <div class="nav-buttons"> <button class="btn btn-primary" onclick="goToScreen('screen-add-asset')">➕ Add Asset</button> </div> </div> <!-- ASSET DETAILS (improved UI) --> <div class="screen" id="screen-asset-details"> <div class="status-bar"> <span>9:41</span> <span>100%</span> </div> <button class="back-btn" onclick="goToScreen('screen-assets')">←</button> <div class="screen-content" style="padding-top: 60px;"> <div class="header" style="text-align: left; padding: 16px 0;"> <h1>HDFC Health Insurance</h1> </div> <!-- Upload Document - Visual Card --> <div class="file-upload-visual" style="margin-bottom: 20px;"> <svg style="width: 48px; height: 48px; fill: var(--primary); margin-bottom: 12px;" viewBox="0 0 24 24"> <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/> </svg> <p style="font-weight: 600; margin-bottom: 4px;">Upload Document</p> <p style="font-size: 14px; color: var(--muted);">Tap to add policy document</p> </div> <div class="card"> <div style="margin-bottom: 16px;"> <div style="font-weight: 600; font-size: 15px; color: var(--muted); margin-bottom: 4px;">Provider</div> <div>HDFC Ergo</div> </div> <div style="margin-bottom: 16px;"> <div style="font-weight: 600; font-size: 15px; color: var(--muted); margin-bottom: 4px;">Policy Number</div> <div>****3456</div> </div> <div style="margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;"> <div> <div style="font-weight: 600; font-size: 15px; color: var(--muted); margin-bottom: 4px;">Renewal Date</div> <div>Feb 15, 2026</div> </div> <svg onclick="showToast('Edit date')" style="width: 20px; height: 20px; fill: var(--primary); cursor: pointer;" viewBox="0 0 24 24"> <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/> </svg> </div> <div> <div style="font-weight: 600; font-size: 15px; color: var(--muted); margin-bottom: 8px;">Nominee Status</div> <span class="tag-small tag-warning" onclick="goToScreen('screen-update-nominee')">Update Nominee</span> </div> </div> </div> <div class="nav-buttons"> <button class="btn btn-danger" onclick="deleteAsset()">Delete Asset</button> </div> </div> <!-- ADD ASSET (improved flow) --> <div class="screen" id="screen-add-asset"> <div class="status-bar"> <span>9:41</span> <span>100%</span> </div> <button class="back-btn" onclick="goToScreen('screen-assets')">←</button> <div class="screen-content" style="padding-top: 60px;"> <div class="header"> <h1>Select Asset Type</h1> </div> <div style="margin-top: 24px;"> <div class="card" style="cursor: pointer; margin-bottom: 12px; padding: 16px;" onclick="goToScreen('screen-add-asset-form')"> <div style="display: flex; align-items: center; gap: 12px;"> <div style="font-size: 28px;">🏥</div> <div style="font-weight: 600;">Insurance</div> </div> </div> <div class="card" style="cursor: pointer; margin-bottom: 12px; padding: 16px;" onclick="goToScreen('screen-add-asset-form')"> <div style="display: flex; align-items: center; gap: 12px;"> <div style="font-size: 28px;">🏦</div> <div style="font-weight: 600;">Banks</div> </div> </div> <div class="card" style="cursor: pointer; margin-bottom: 12px; padding: 16px;" onclick="showToast('Coming soon')"> <div style="display: flex; align-items: center; gap: 12px;"> <div style="font-size: 28px;">💎</div> <div style="font-weight: 600;">FDs</div> </div> </div> <div class="card" style="cursor: pointer; margin-bottom: 12px; padding: 16px;" onclick="showToast('Coming soon')"> <div style="display: flex; align-items: center; gap: 12px;"> <div style="font-size: 28px;">📈</div> <div style="font-weight: 600;">Mutual Funds</div> </div> </div> <div class="card" style="cursor: pointer; margin-bottom: 12px; padding: 16px;" onclick="showToast('Coming soon')"> <div style="display: flex; align-items: center; gap: 12px;"> <div style="font-size: 28px;">📊</div> <div style="font-weight: 600;">Demat</div> </div> </div> <div class="card" style="cursor: pointer; margin-bottom: 12px; padding: 16px;" onclick="showToast('Coming soon')"> <div style="display: flex; align-items: center; gap: 12px;"> <div style="font-size: 28px;">🏠</div> <div style="font-weight: 600;">Loans</div> </div> </div> <div class="card" style="cursor: pointer; padding: 16px;" onclick="showToast('Coming soon')"> <div style="display: flex; align-items: center; gap: 12px;"> <div style="font-size: 28px;">💼</div> <div style="font-weight: 600;">PF/NPS/PPF</div> </div> </div> </div> </div> </div> <!-- Add Asset Form --> <div class="screen" id="screen-add-asset-form"> <div class="status-bar"> <span>9:41</span> <span>100%</span> </div> <button class="back-btn" onclick="goToScreen('screen-add-asset')">←</button> <div class="screen-content" style="padding-top: 60px;"> <div class="header"> <h1>Add Asset Details</h1> </div> <div class="input-group"> <label>Provider</label> <input type="text" placeholder="e.g., HDFC Ergo"> </div> <div class="input-group"> <label>Policy/Account Number</label> <input type="text" placeholder="Masked ID"> </div> <div class="input-group"> <label>Date (Renewal/Maturity)</label> <input type="date"> </div> <div class="input-group"> <label>Nominee Status</label> <div class="toggle-group"> <div class="toggle-btn">Yes</div> <div class="toggle-btn active">No</div> <div class="toggle-btn">Not sure</div> </div> </div> <div class="file-upload-visual"> <div style="font-size: 48px; margin-bottom: 12px;">📄</div> <p style="font-weight: 600;">Upload Document (Optional)</p> </div> </div> <div class="nav-buttons"> <button class="btn btn-primary" onclick="saveNewAsset()">Save</button> </div> </div> <!-- REMINDERS SCREEN (improved flows) --> <div class="screen" id="screen-reminders"> <div class="status-bar"> <span>9:41</span> <span>100%</span> </div> <button class="back-btn" onclick="goToScreen('screen-home')">←</button> <div class="screen-content" style="padding-top: 60px;"> <div class="header" style="text-align: left; padding: 16px 0;"> <h1>Reminders</h1> </div> <div class="tabs"> <div class="tab active" onclick="showReminderTab('renewals')">Renewals</div> <div class="tab" onclick="showReminderTab('maturities')">Maturities</div> <div class="tab" onclick="showReminderTab('nominees')">Pending Nominee</div> <div class="tab" onclick="showReminderTab('docs')">Missing Docs</div> </div> <div id="reminder-list-renewals"> <div class="reminder-card" onclick="goToScreen('screen-renewal-detail')"> <div class="reminder-icon">📅</div> <div class="reminder-content" style="flex: 1;"> <h4>HDFC Health Insurance</h4> <p>Due: Feb 15, 2026 (7 days)</p> </div> <button class="btn btn-primary" style="margin: 0; padding: 8px 16px; font-size: 14px; width: auto;" onclick="event.stopPropagation(); markDone()">Mark Done</button> </div> </div> <div id="reminder-list-maturities" style="display: none;"> <p style="text-align: center; color: var(--muted); padding: 40px 0;">No upcoming maturities</p> </div> <div id="reminder-list-nominees" style="display: none;"> <div class="reminder-card" onclick="goToScreen('screen-update-nominee')"> <div class="reminder-icon">⚠️</div> <div class="reminder-content"> <h4>HDFC Bank - Update Nominee</h4> <p>Tap to add nominee</p> </div> </div> </div> <div id="reminder-list-docs" style="display: none;"> <div class="reminder-card" onclick="showToast('Upload document')"> <div class="reminder-icon">📄</div> <div class="reminder-content"> <h4>HDFC Bank - Missing Document</h4> <p>Tap to upload</p> </div> </div> </div> </div> <div class="bottom-nav"> <div class="bottom-nav-item" onclick="goToScreen('screen-home')"> <div class="bottom-nav-icon">🏠</div> <div class="bottom-nav-label">Home</div> </div> <div class="bottom-nav-item" onclick="goToScreen('screen-assets')"> <div class="bottom-nav-icon">📊</div> <div class="bottom-nav-label">Assets</div> </div> <div class="bottom-nav-item active"> <div class="bottom-nav-icon">🔔</div> <div class="bottom-nav-label">Reminders</div> </div> <div class="bottom-nav-item" onclick="goToScreen('screen-members')"> <div class="bottom-nav-icon">👥</div> <div class="bottom-nav-label">Family</div> </div> </div> </div> <!-- Renewal Detail --> <div class="screen" id="screen-renewal-detail"> <div class="status-bar"> <span>9:41</span> <span>100%</span> </div> <button class="back-btn" onclick="goToScreen('screen-reminders')">←</button> <div class="screen-content" style="padding-top: 60px;"> <div class="header"> <h1>HDFC Health Insurance</h1> <p>Renewal Details</p> </div> <div class="card"> <div style="margin-bottom: 16px;"> <div style="font-weight: 600; font-size: 15px; color: var(--muted); margin-bottom: 4px;">Renewal Date</div> <div>Feb 15, 2026</div> </div> <div> <div style="font-weight: 600; font-size: 15px; color: var(--muted); margin-bottom: 4px;">Policy Number</div> <div>****3456</div> </div> </div> <div style="margin-top: 20px;"> <div class="input-group"> <label>Update Renewal Date</label> <input type="date"> </div> </div> </div> <div class="nav-buttons"> <button class="btn btn-primary" onclick="goToScreen('screen-reminders'); showToast('Date updated')">Update Date</button> <button class="btn btn-secondary" onclick="goToScreen('screen-reminders'); showToast('Marked as done')">Mark Done</button> </div> </div> <!-- MEMBERS SCREEN (complete flows) --> <div class="screen" id="screen-members"> <div class="status-bar"> <span>9:41</span> <span>100%</span> </div> <button class="back-btn" onclick="goToScreen('screen-home')">←</button> <div class="screen-content" style="padding-top: 60px;"> <div class="header" style="text-align: left; padding: 16px 0;"> <h1>Trusted Members</h1> <p>Manage emergency access</p> </div> <div class="card"> <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 12px;"> <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--soft); display: flex; align-items: center; justify-content: center; font-size: 28px;">👤</div> <div style="flex: 1;"> <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">Priya Sharma</h4> <p style="color: var(--muted); font-size: 15px;">Spouse</p> </div> </div> <div style="display: flex; gap: 8px; padding-top: 12px; border-top: 1px solid var(--border);"> <div style="flex: 1; text-align: center; padding: 8px;"> <div style="font-size: 14px; color: var(--muted);">Status</div> <div style="font-weight: 600; color: var(--good-text); margin-top: 4px;">Active</div> </div> <div style="flex: 1; text-align: center; padding: 8px; border-left: 1px solid var(--border);"> <div style="font-size: 14px; color: var(--muted);">Last Access</div> <div style="font-weight: 600; margin-top: 4px;">Never</div> </div> </div> </div> </div> <div class="nav-buttons"> <button class="btn btn-primary" onclick="showToast('Premium feature')">Add Trusted Member (Premium)</button> </div> </div> <!-- Other placeholder screens --> <div class="screen" id="screen-certificate"> <div class="status-bar"> <span>9:41</span> <span>100%</span> </div> <button class="back-btn" onclick="goToScreen('screen-home')">←</button> <div class="screen-content" style="padding-top: 60px;"> <div class="header"> <h1>Emergency Ready Certificate</h1> </div> <p style="text-align: center; padding: 40px 0; color: var(--muted);">Certificate details here</p> </div> </div> <div class="screen" id="screen-emergency-pack"> <div class="status-bar"> <span>9:41</span> <span>100%</span> </div> <button class="back-btn" onclick="goToScreen('screen-home')">←</button> <div class="screen-content" style="padding-top: 60px;"> <div class="header"> <h1>Emergency Pack</h1> </div> <p style="text-align: center; padding: 40px 0; color: var(--muted);">Pack contents here</p> </div> </div> <div class="screen" id="screen-nominee-gap"> <div class="status-bar"> <span>9:41</span> <span>100%</span> </div> <button class="back-btn" onclick="goToScreen('screen-home')">←</button> <div class="screen-content" style="padding-top: 60px;"> <div class="header"> <h1>Update Nominee</h1> </div> <div class="input-group"> <label>Nominee Name</label> <input type="text" placeholder="Enter name"> </div> </div> <div class="nav-buttons"> <button class="btn btn-primary" onclick="goToScreen('screen-home'); showToast('Nominee updated')">Save</button> </div> </div> <div class="screen" id="screen-update-nominee"> <div class="status-bar"> <span>9:41</span> <span>100%</span> </div> <button class="back-btn" onclick="goToScreen('screen-reminders')">←</button> <div class="screen-content" style="padding-top: 60px;"> <div class="header"> <h1>Update Nominee</h1> </div> <div class="input-group"> <label>Nominee Name</label> <input type="text" placeholder="Enter name"> </div> <div class="input-group"> <label>Relationship</label> <select> <option>Spouse</option> <option>Adult child</option> </select> </div> </div> <div class="nav-buttons"> <button class="btn btn-primary" onclick="goToScreen('screen-reminders'); showToast('Nominee updated')">Update</button> </div> </div> <div class="screen" id="screen-profile"> <div class="status-bar"> <span>9:41</span> <span>100%</span> </div> <button class="back-btn" onclick="goToScreen('screen-home'); closeProfileMenu()">←</button> <div class="screen-content" style="padding-top: 60px;"> <div class="header"> <h1>Profile</h1> </div> <div class="card"> <p>Rahul Kumar</p> <p style="color: var(--muted);">rahul@example.com</p> </div> </div> </div> <div class="screen" id="screen-security"> <div class="status-bar"> <span>9:41</span> <span>100%</span> </div> <button class="back-btn" onclick="goToScreen('screen-home'); closeProfileMenu()">←</button> <div class="screen-content" style="padding-top: 60px;"> <div class="header"> <h1>Security</h1> </div> <div class="card"> <p>App Lock: Enabled</p> </div> </div> </div> <div class="screen" id="screen-audit-logs"> <div class="status-bar"> <span>9:41</span> <span>100%</span> </div> <button class="back-btn" onclick="goToScreen('screen-home'); closeProfileMenu()">←</button> <div class="screen-content" style="padding-top: 60px;"> <div class="header"> <h1>Audit Logs</h1> </div> <p style="text-align: center; padding: 40px 0; color: var(--muted);">No access requests</p> </div> </div> </div>
+  <!-- HOME SCREEN (with all improvements) -->
+        <div class="screen" id="screen-home">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <div class="header-with-icons">
+                <div class="header-left">
+                    <div class="header-logo-small">
+                        <svg class="header-logo-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L4 6V11C4 16.55 7.84 21.74 12 23C16.16 21.74 20 16.55 20 11V6L12 2Z" fill="white" opacity="0.9"/>
+                            <path d="M12 7L8 9.5V12.5C8 15.26 9.76 17.8 12 18.5C14.24 17.8 16 15.26 16 12.5V9.5L12 7Z" fill="#0F172A"/>
+                            <circle cx="12" cy="12" r="2" fill="white"/>
+                        </svg>
+                    </div>
+                    <div class="header-title">FinCare</div>
+                </div>
+                <div class="profile-pic" onclick="showProfileMenu()" style="cursor: pointer;">RK</div>
+            </div>
+            <div class="screen-content" style="padding-top: 16px;">
+                
+                <!-- 1. App Lock Card -->
+                <div class="card" style="margin-bottom: 20px;" id="app-lock-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: 700; font-size: 18px; margin-bottom: 4px;">Secure FinCare with App Lock</div>
+                            <p style="color: var(--muted); font-size: 15px;">Recommended for added security</p>
+                        </div>
+                        <div class="toggle-switch" id="applock-toggle" onclick="toggleAppLock()">
+                            <div class="toggle-slider"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Certificate with Warning Icon -->
+                <div class="certificate-section warning" id="certificate-card" style="cursor: pointer;" onclick="goToScreen('screen-certificate')">
+                    <svg class="icon-large" style="fill: white; margin-bottom: 16px;" viewBox="0 0 24 24">
+                        <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+                    </svg>
+                    <div class="certificate-status">Some Gaps</div>
+                    <p style="opacity: 0.9; margin-bottom: 0;">4 out of 10 items incomplete in your Emergency Ready Certificate</p>
+                </div>
+
+                <!-- 3. Emergency Pack -->
+                <div class="card" style="margin-bottom: 20px; cursor: pointer;" onclick="goToScreen('screen-emergency-pack')">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <div>
+                            <div style="font-weight: 700; font-size: 19px; margin-bottom: 6px;">Emergency Pack</div>
+                            <p style="color: var(--good-text); font-size: 14px; font-weight: 600;">✓ Ready</p>
+                        </div>
+                        <svg style="width: 40px; height: 40px; fill: var(--primary);" viewBox="0 0 24 24">
+                            <path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2z"/>
+                        </svg>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid var(--border);">
+                        <p style="color: var(--muted); font-size: 14px;">Last updated: Today</p>
+                        <p style="color: var(--primary); font-weight: 600; font-size: 15px;">View Pack →</p>
+                    </div>
+                </div>
+
+                <!-- 4. Readiness Steps -->
+                <div style="margin-bottom: 24px;">
+                    <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Readiness Steps</h3>
+                    <div class="reminder-card" style="cursor: pointer;" onclick="goToScreen('screen-nominee-gap')">
+                        <div class="reminder-icon">⚠️</div>
+                        <div class="reminder-content" style="flex: 1;">
+                            <h4>Nominee missing in 2 assets</h4>
+                            <p>Tap to fix</p>
+                        </div>
+                        <button class="btn btn-primary" style="margin: 0; padding: 10px 20px; font-size: 14px; width: auto;" onclick="event.stopPropagation(); goToScreen('screen-nominee-gap')">Fix</button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="bottom-nav">
+                <div class="bottom-nav-item active">
+                    <div class="bottom-nav-icon">🏠</div>
+                    <div class="bottom-nav-label">Home</div>
+                </div>
+                <div class="bottom-nav-item" onclick="goToScreen('screen-assets')">
+                    <div class="bottom-nav-icon">📊</div>
+                    <div class="bottom-nav-label">Assets</div>
+                </div>
+                <div class="bottom-nav-item" onclick="goToScreen('screen-reminders')">
+                    <div class="bottom-nav-icon">🔔</div>
+                    <div class="bottom-nav-label">Reminders</div>
+                </div>
+                <div class="bottom-nav-item" onclick="goToScreen('screen-members')">
+                    <div class="bottom-nav-icon">👥</div>
+                    <div class="bottom-nav-label">Family</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ASSETS SCREEN (with improved details) -->
+        <div class="screen" id="screen-assets">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header" style="text-align: left; padding: 16px 0;">
+                    <h1>Assets</h1>
+                    <p>Manage your financial assets</p>
+                </div>
+                <div class="tabs">
+                    <div class="tab active" onclick="showAssetTab('all')">All</div>
+                    <div class="tab" onclick="showAssetTab('insurance')">Insurance</div>
+                    <div class="tab" onclick="showAssetTab('banks')">Banks</div>
+                </div>
+                <div id="asset-list-all">
+                    <div class="asset-item" onclick="showAssetDetails('health-1')">
+                        <div class="asset-info">
+                            <h4>HDFC Health Insurance</h4>
+                            <p>****3456 • Feb 15, 2026</p>
+                        </div>
+                        <div class="badge badge-warning">No Nominee</div>
+                    </div>
+                    <div class="asset-item" onclick="showAssetDetails('bank-1')">
+                        <div class="asset-info">
+                            <h4>HDFC Bank</h4>
+                            <p>****1234</p>
+                        </div>
+                        <div class="badge badge-danger">Missing Doc</div>
+                    </div>
+                </div>
+                <div id="asset-list-insurance" style="display: none;">
+                    <div class="asset-item" onclick="showAssetDetails('health-1')">
+                        <div class="asset-info">
+                            <h4>HDFC Health Insurance</h4>
+                            <p>****3456</p>
+                        </div>
+                        <div class="badge badge-warning">No Nominee</div>
+                    </div>
+                </div>
+                <div id="asset-list-banks" style="display: none;">
+                    <div class="asset-item" onclick="showAssetDetails('bank-1')">
+                        <div class="asset-info">
+                            <h4>HDFC Bank</h4>
+                            <p>****1234</p>
+                        </div>
+                        <div class="badge badge-danger">Missing Doc</div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-add-asset')">➕ Add Asset</button>
+            </div>
+        </div>
+
+        <!-- ASSET DETAILS (improved UI) -->
+        <div class="screen" id="screen-asset-details">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-assets')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header" style="text-align: left; padding: 16px 0;">
+                    <h1>HDFC Health Insurance</h1>
+                </div>
+                
+                <!-- Upload Document - Visual Card -->
+                <div class="file-upload-visual" style="margin-bottom: 20px;">
+                    <svg style="width: 48px; height: 48px; fill: var(--primary); margin-bottom: 12px;" viewBox="0 0 24 24">
+                        <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+                    </svg>
+                    <p style="font-weight: 600; margin-bottom: 4px;">Upload Document</p>
+                    <p style="font-size: 14px; color: var(--muted);">Tap to add policy document</p>
+                </div>
+
+                <div class="card">
+                    <div style="margin-bottom: 16px;">
+                        <div style="font-weight: 600; font-size: 15px; color: var(--muted); margin-bottom: 4px;">Provider</div>
+                        <div>HDFC Ergo</div>
+                    </div>
+                    <div style="margin-bottom: 16px;">
+                        <div style="font-weight: 600; font-size: 15px; color: var(--muted); margin-bottom: 4px;">Policy Number</div>
+                        <div>****3456</div>
+                    </div>
+                    <div style="margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-weight: 600; font-size: 15px; color: var(--muted); margin-bottom: 4px;">Renewal Date</div>
+                            <div>Feb 15, 2026</div>
+                        </div>
+                        <svg onclick="showToast('Edit date')" style="width: 20px; height: 20px; fill: var(--primary); cursor: pointer;" viewBox="0 0 24 24">
+                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; font-size: 15px; color: var(--muted); margin-bottom: 8px;">Nominee Status</div>
+                        <span class="tag-small tag-warning" onclick="goToScreen('screen-update-nominee')">Update Nominee</span>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-danger" onclick="deleteAsset()">Delete Asset</button>
+            </div>
+        </div>
+
+        <!-- ADD ASSET (improved flow) -->
+        <div class="screen" id="screen-add-asset">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-assets')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header">
+                    <h1>Select Asset Type</h1>
+                </div>
+                <div style="margin-top: 24px;">
+                    <div class="card" style="cursor: pointer; margin-bottom: 12px; padding: 16px;" onclick="goToScreen('screen-add-asset-form')">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="font-size: 28px;">🏥</div>
+                            <div style="font-weight: 600;">Insurance</div>
+                        </div>
+                    </div>
+                    <div class="card" style="cursor: pointer; margin-bottom: 12px; padding: 16px;" onclick="goToScreen('screen-add-asset-form')">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="font-size: 28px;">🏦</div>
+                            <div style="font-weight: 600;">Banks</div>
+                        </div>
+                    </div>
+                    <div class="card" style="cursor: pointer; margin-bottom: 12px; padding: 16px;" onclick="showToast('Coming soon')">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="font-size: 28px;">💎</div>
+                            <div style="font-weight: 600;">FDs</div>
+                        </div>
+                    </div>
+                    <div class="card" style="cursor: pointer; margin-bottom: 12px; padding: 16px;" onclick="showToast('Coming soon')">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="font-size: 28px;">📈</div>
+                            <div style="font-weight: 600;">Mutual Funds</div>
+                        </div>
+                    </div>
+                    <div class="card" style="cursor: pointer; margin-bottom: 12px; padding: 16px;" onclick="showToast('Coming soon')">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="font-size: 28px;">📊</div>
+                            <div style="font-weight: 600;">Demat</div>
+                        </div>
+                    </div>
+                    <div class="card" style="cursor: pointer; margin-bottom: 12px; padding: 16px;" onclick="showToast('Coming soon')">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="font-size: 28px;">🏠</div>
+                            <div style="font-weight: 600;">Loans</div>
+                        </div>
+                    </div>
+                    <div class="card" style="cursor: pointer; padding: 16px;" onclick="showToast('Coming soon')">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="font-size: 28px;">💼</div>
+                            <div style="font-weight: 600;">PF/NPS/PPF</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Asset Form -->
+        <div class="screen" id="screen-add-asset-form">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-add-asset')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header">
+                    <h1>Add Asset Details</h1>
+                </div>
+                <div class="input-group">
+                    <label>Provider</label>
+                    <input type="text" placeholder="e.g., HDFC Ergo">
+                </div>
+                <div class="input-group">
+                    <label>Policy/Account Number</label>
+                    <input type="text" placeholder="Masked ID">
+                </div>
+                <div class="input-group">
+                    <label>Date (Renewal/Maturity)</label>
+                    <input type="date">
+                </div>
+                <div class="input-group">
+                    <label>Nominee Status</label>
+                    <div class="toggle-group">
+                        <div class="toggle-btn">Yes</div>
+                        <div class="toggle-btn active">No</div>
+                        <div class="toggle-btn">Not sure</div>
+                    </div>
+                </div>
+                <div class="file-upload-visual">
+                    <div style="font-size: 48px; margin-bottom: 12px;">📄</div>
+                    <p style="font-weight: 600;">Upload Document (Optional)</p>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="saveNewAsset()">Save</button>
+            </div>
+        </div>
+
+        <!-- REMINDERS SCREEN (improved flows) -->
+        <div class="screen" id="screen-reminders">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header" style="text-align: left; padding: 16px 0;">
+                    <h1>Reminders</h1>
+                </div>
+                <div class="tabs">
+                    <div class="tab active" onclick="showReminderTab('renewals')">Renewals</div>
+                    <div class="tab" onclick="showReminderTab('maturities')">Maturities</div>
+                    <div class="tab" onclick="showReminderTab('nominees')">Pending Nominee</div>
+                    <div class="tab" onclick="showReminderTab('docs')">Missing Docs</div>
+                </div>
+                <div id="reminder-list-renewals">
+                    <div class="reminder-card" onclick="goToScreen('screen-renewal-detail')">
+                        <div class="reminder-icon">📅</div>
+                        <div class="reminder-content" style="flex: 1;">
+                            <h4>HDFC Health Insurance</h4>
+                            <p>Due: Feb 15, 2026 (7 days)</p>
+                        </div>
+                        <button class="btn btn-primary" style="margin: 0; padding: 8px 16px; font-size: 14px; width: auto;" onclick="event.stopPropagation(); markDone()">Mark Done</button>
+                    </div>
+                </div>
+                <div id="reminder-list-maturities" style="display: none;">
+                    <p style="text-align: center; color: var(--muted); padding: 40px 0;">No upcoming maturities</p>
+                </div>
+                <div id="reminder-list-nominees" style="display: none;">
+                    <div class="reminder-card" onclick="goToScreen('screen-update-nominee')">
+                        <div class="reminder-icon">⚠️</div>
+                        <div class="reminder-content">
+                            <h4>HDFC Bank - Update Nominee</h4>
+                            <p>Tap to add nominee</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="reminder-list-docs" style="display: none;">
+                    <div class="reminder-card" onclick="showToast('Upload document')">
+                        <div class="reminder-icon">📄</div>
+                        <div class="reminder-content">
+                            <h4>HDFC Bank - Missing Document</h4>
+                            <p>Tap to upload</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom-nav">
+                <div class="bottom-nav-item" onclick="goToScreen('screen-home')">
+                    <div class="bottom-nav-icon">🏠</div>
+                    <div class="bottom-nav-label">Home</div>
+                </div>
+                <div class="bottom-nav-item" onclick="goToScreen('screen-assets')">
+                    <div class="bottom-nav-icon">📊</div>
+                    <div class="bottom-nav-label">Assets</div>
+                </div>
+                <div class="bottom-nav-item active">
+                    <div class="bottom-nav-icon">🔔</div>
+                    <div class="bottom-nav-label">Reminders</div>
+                </div>
+                <div class="bottom-nav-item" onclick="goToScreen('screen-members')">
+                    <div class="bottom-nav-icon">👥</div>
+                    <div class="bottom-nav-label">Family</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Renewal Detail -->
+        <div class="screen" id="screen-renewal-detail">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-reminders')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header">
+                    <h1>HDFC Health Insurance</h1>
+                    <p>Renewal Details</p>
+                </div>
+                <div class="card">
+                    <div style="margin-bottom: 16px;">
+                        <div style="font-weight: 600; font-size: 15px; color: var(--muted); margin-bottom: 4px;">Renewal Date</div>
+                        <div>Feb 15, 2026</div>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; font-size: 15px; color: var(--muted); margin-bottom: 4px;">Policy Number</div>
+                        <div>****3456</div>
+                    </div>
+                </div>
+                <div style="margin-top: 20px;">
+                    <div class="input-group">
+                        <label>Update Renewal Date</label>
+                        <input type="date">
+                    </div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-reminders'); showToast('Date updated')">Update Date</button>
+                <button class="btn btn-secondary" onclick="goToScreen('screen-reminders'); showToast('Marked as done')">Mark Done</button>
+            </div>
+        </div>
+
+        <!-- MEMBERS SCREEN (complete flows) -->
+        <div class="screen" id="screen-members">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header" style="text-align: left; padding: 16px 0;">
+                    <h1>Trusted Members</h1>
+                    <p>Manage emergency access</p>
+                </div>
+                <div class="card">
+                    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 12px;">
+                        <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--soft); display: flex; align-items: center; justify-content: center; font-size: 28px;">👤</div>
+                        <div style="flex: 1;">
+                            <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">Priya Sharma</h4>
+                            <p style="color: var(--muted); font-size: 15px;">Spouse</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 8px; padding-top: 12px; border-top: 1px solid var(--border);">
+                        <div style="flex: 1; text-align: center; padding: 8px;">
+                            <div style="font-size: 14px; color: var(--muted);">Status</div>
+                            <div style="font-weight: 600; color: var(--good-text); margin-top: 4px;">Active</div>
+                        </div>
+                        <div style="flex: 1; text-align: center; padding: 8px; border-left: 1px solid var(--border);">
+                            <div style="font-size: 14px; color: var(--muted);">Last Access</div>
+                            <div style="font-weight: 600; margin-top: 4px;">Never</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="showToast('Premium feature')">Add Trusted Member (Premium)</button>
+            </div>
+        </div>
+
+        <!-- Other placeholder screens -->
+        <div class="screen" id="screen-certificate">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header">
+                    <h1>Emergency Ready Certificate</h1>
+                </div>
+                <p style="text-align: center; padding: 40px 0; color: var(--muted);">Certificate details here</p>
+            </div>
+        </div>
+
+        <div class="screen" id="screen-emergency-pack">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header">
+                    <h1>Emergency Pack</h1>
+                </div>
+                <p style="text-align: center; padding: 40px 0; color: var(--muted);">Pack contents here</p>
+            </div>
+        </div>
+
+        <div class="screen" id="screen-nominee-gap">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-home')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header">
+                    <h1>Update Nominee</h1>
+                </div>
+                <div class="input-group">
+                    <label>Nominee Name</label>
+                    <input type="text" placeholder="Enter name">
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-home'); showToast('Nominee updated')">Save</button>
+            </div>
+        </div>
+
+        <div class="screen" id="screen-update-nominee">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-reminders')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header">
+                    <h1>Update Nominee</h1>
+                </div>
+                <div class="input-group">
+                    <label>Nominee Name</label>
+                    <input type="text" placeholder="Enter name">
+                </div>
+                <div class="input-group">
+                    <label>Relationship</label>
+                    <select>
+                        <option>Spouse</option>
+                        <option>Adult child</option>
+                    </select>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-reminders'); showToast('Nominee updated')">Update</button>
+            </div>
+        </div>
+
+        <div class="screen" id="screen-profile">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-home'); closeProfileMenu()">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header">
+                    <h1>Profile</h1>
+                </div>
+                <div class="card">
+                    <p>Rahul Kumar</p>
+                    <p style="color: var(--muted);">rahul@example.com</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="screen" id="screen-security">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-home'); closeProfileMenu()">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header">
+                    <h1>Security</h1>
+                </div>
+                <div class="card">
+                    <p>App Lock: Enabled</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="screen" id="screen-audit-logs">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-home'); closeProfileMenu()">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header">
+                    <h1>Audit Logs</h1>
+                </div>
+                <p style="text-align: center; padding: 40px 0; color: var(--muted);">No access requests</p>
+            </div>
  
  </div>
  <div class="toast" id="toast"></div>
@@ -638,7 +1199,7 @@
  const otpInputs = document.querySelectorAll('.otp-input');
  otpInputs.forEach((input, index) => {
  input.addEventListener('input', (e) => {
- e..target.value = e.target.value.replace(/[^0-9]/g,'');
+ e.target.value = e.target.value.replace(/[^0-9]/g,'');
  if (e.target.value.length === 1 && index < otpInputs.length - 1) otpInputs[index + 1].focus();
  });
  input.addEventListener('keydown', (e) => {
