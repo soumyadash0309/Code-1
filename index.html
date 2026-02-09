@@ -856,7 +856,118 @@
                 </div>
                 <div class="input-group">
                     <label>Mobile Number</label>
-                    <input type="tel" placeholder="+91 9876543210" value="">
+                    <input type="tel" placeholder="+91 9876543210" value="" id="mobile-input" maxlength="10" oninput="validateMobileNumber(this)">
+                    <p class="microcopy">We use OTP to keep your account secure.</p>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-otp')">Get OTP</button>
+            </div>
+        </div>
+
+        <!-- Screen 1.5: OTP Verification -->
+        <div class="screen" id="screen-otp">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-login')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="header">
+                    <h1>Enter OTP</h1>
+                    <p>We've sent a code to +91 9876543210</p>
+                </div>
+                <div class="otp-inputs">
+                    <input type="text" maxlength="1" class="otp-input" />
+                    <input type="text" maxlength="1" class="otp-input" />
+                    <input type="text" maxlength="1" class="otp-input" />
+                    <input type="text" maxlength="1" class="otp-input" />
+                    <input type="text" maxlength="1" class="otp-input" />
+                    <input type="text" maxlength="1" class="otp-input" />
+                </div>
+                <div class="timer-text">
+                    Resend OTP in <span id="timer">60</span>s
+                </div>
+                <div style="text-align: center; margin-top: 24px;">
+                    <button class="link-btn" id="resend-btn" disabled onclick="resendOTP()">Resend OTP</button>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-create-pack')">Continue</button>
+                <button class="btn btn-secondary" onclick="goToScreen('screen-login')">Change Number</button>
+            </div>
+        </div>
+
+        <!-- Screen 2: Create Emergency Pack -->
+        <div class="screen" id="screen-create-pack">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <div class="screen-content">
+                <div style="text-align: center; margin-top: 60px; margin-bottom: 40px;">
+                    <div style="font-size: 64px; margin-bottom: 20px;">🎯</div>
+                </div>
+                <div class="header">
+                    <h1>Create your Emergency Pack</h1>
+                    <p>This takes 2 minutes. You can skip anything optional.</p>
+                </div>
+                <div style="margin-top: 40px;">
+                    <div class="card" style="padding: 24px;">
+                        <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 16px;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--soft); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; color: var(--primary);">1</div>
+                            <div>
+                                <div style="font-weight: 600; font-size: 17px;">Your details</div>
+                                <p style="color: var(--muted); font-size: 14px; margin-top: 2px;">Basic information</p>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 16px;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--soft); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; color: var(--primary);">2</div>
+                            <div>
+                                <div style="font-weight: 600; font-size: 17px;">Family safety setup</div>
+                                <p style="color: var(--muted); font-size: 14px; margin-top: 2px;">Emergency contacts & trusted access</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--soft); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; color: var(--primary);">3</div>
+                            <div>
+                                <div style="font-weight: 600; font-size: 17px;">Essential assets</div>
+                                <p style="color: var(--muted); font-size: 14px; margin-top: 2px;">3 critical financial assets</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-login')">Start</button>
+                <button class="btn btn-secondary" onclick="goToScreen('screen-home')">Skip for now</button>
+            </div>
+        </div>
+
+        <!-- Screen 1: Login -->
+        <div class="screen" id="screen-login">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <div class="screen-content">
+                <div class="logo" style="margin-top: 60px;">
+                    <div class="logo-icon">
+                        <svg class="logo-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L4 6V11C4 16.55 7.84 21.74 12 23C16.16 21.74 20 16.55 20 11V6L12 2Z" fill="white" opacity="0.9"/>
+                            <path d="M12 7L8 9.5V12.5C8 15.26 9.76 17.8 12 18.5C14.24 17.8 16 15.26 16 12.5V9.5L12 7Z" fill="#0F172A"/>
+                            <circle cx="12" cy="12" r="2" fill="white"/>
+                        </svg>
+                    </div>
+                    <div class="logo-text">FinCare</div>
+                </div>
+                <div class="header">
+                    <h1>Welcome to FinCare</h1>
+                    <p>Sign in to get started</p>
+                </div>
+                <div class="input-group">
+                    <label>Mobile Number</label>
+                    <input type="tel" placeholder="+91 9876543210" value="" id="mobile-input" maxlength="10" oninput="validateMobileNumber(this)">
                     <p class="microcopy">We use OTP to keep your account secure.</p>
                 </div>
             </div>
@@ -898,19 +1009,19 @@
             </div>
         </div>
 
-        <!-- Screen 2: Owner Profile - Basic Details -->
+        <!-- Screen 2: Owner Profile - Basic Details (Step 1) -->
         <div class="screen" id="screen-owner-profile-1">
             <div class="status-bar">
                 <span>9:41</span>
                 <span>100%</span>
             </div>
             <div class="screen-content">
-                <div class="step-indicator">Step 1 of 4</div>
+                <div class="step-indicator">Step 1 of 3: Your Details</div>
                 <div class="progress-bar">
-                    <div class="progress-fill" style="width: 25%"></div>
+                    <div class="progress-fill" style="width: 33%"></div>
                 </div>
                 <div class="header">
-                    <h1>Your Profile</h1>
+                    <h1>Your Details</h1>
                     <p>This helps your family verify details during claims.</p>
                 </div>
                 <div class="input-group">
@@ -929,84 +1040,31 @@
                     <label>Mobile Number</label>
                     <input type="tel" value="+91 9876543210" disabled style="opacity: 0.6;">
                 </div>
-                <div class="input-group">
-                    <label>Address (Optional)</label>
-                    <input type="text" placeholder="Enter your address">
-                </div>
-                <div class="input-group">
-                    <label>Aadhar Card Number (Optional)</label>
-                    <input type="text" placeholder="Enter 12-digit Aadhar number" maxlength="12">
-                </div>
             </div>
             <div class="nav-buttons">
-                <button class="btn btn-primary" onclick="goToScreen('screen-owner-profile-2')">Continue</button>
+                <button class="btn btn-primary" onclick="goToScreen('screen-emergency-contact')">Continue</button>
             </div>
         </div>
 
-        <!-- Screen 3: Owner Profile - Family Context -->
-        <div class="screen" id="screen-owner-profile-2">
+        <!-- Screen 3: Emergency Contact (Step 2A - Optional) -->
+        <div class="screen" id="screen-emergency-contact">
             <div class="status-bar">
                 <span>9:41</span>
                 <span>100%</span>
             </div>
-            <div class="screen-content">
-                <div class="step-indicator">Step 2 of 4</div>
+            <button class="back-btn" onclick="goToScreen('screen-owner-profile-1')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="step-indicator">Step 2 of 3: Family Safety Setup</div>
                 <div class="progress-bar">
-                    <div class="progress-fill" style="width: 50%"></div>
-                </div>
-                <div class="header">
-                    <h1>Family Details</h1>
-                    <p>Used to personalise your Emergency Pack.</p>
-                </div>
-                <div class="input-group">
-                    <label>Marital Status (Optional)</label>
-                    <select>
-                        <option value="">Select</option>
-                        <option value="single">Single</option>
-                        <option value="married">Married</option>
-                        <option value="divorced">Divorced</option>
-                        <option value="widowed">Widowed</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>Spouse Name (Optional)</label>
-                    <input type="text" placeholder="Enter spouse name">
-                </div>
-                <div class="input-group">
-                    <label>Number of Dependents (Optional)</label>
-                    <select>
-                        <option value="">Select</option>
-                        <option value="0">None</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4+</option>
-                    </select>
-                </div>
-            </div>
-            <div class="nav-buttons">
-                <button class="btn btn-primary" onclick="goToScreen('screen-owner-profile-3')">Continue</button>
-            </div>
-        </div>
-
-        <!-- Screen 4: Owner Profile - Emergency Contact -->
-        <div class="screen" id="screen-owner-profile-3">
-            <div class="status-bar">
-                <span>9:41</span>
-                <span>100%</span>
-            </div>
-            <div class="screen-content">
-                <div class="step-indicator">Step 3 of 4</div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 75%"></div>
+                    <div class="progress-fill" style="width: 66%"></div>
                 </div>
                 <div class="header">
                     <h1>Emergency Contact</h1>
-                    <p>This contact can help in urgent situations.</p>
+                    <p>This person can help your family with claims in an emergency.</p>
                 </div>
                 <div class="input-group">
                     <label>Name</label>
-                    <input type="text" placeholder="Contact name">
+                    <input type="text" placeholder="Enter name">
                 </div>
                 <div class="input-group">
                     <label>Relationship</label>
@@ -1015,8 +1073,8 @@
                         <option value="spouse">Spouse</option>
                         <option value="son">Son</option>
                         <option value="daughter">Daughter</option>
-                        <option value="sibling">Sibling</option>
                         <option value="parent">Parent</option>
+                        <option value="sibling">Sibling</option>
                         <option value="friend">Friend</option>
                     </select>
                 </div>
@@ -1026,46 +1084,103 @@
                 </div>
             </div>
             <div class="nav-buttons">
-                <button class="btn btn-primary" onclick="goToScreen('screen-owner-profile-4')">Continue</button>
+                <button class="btn btn-primary" onclick="goToScreen('screen-pack-trusted-member')">Continue</button>
+                <button class="btn btn-secondary" onclick="goToScreen('screen-pack-trusted-member')">Skip</button>
             </div>
         </div>
 
-        <!-- Screen 5: Owner Profile - Security -->
-        <div class="screen" id="screen-owner-profile-4">
+        <!-- Screen 4: Trusted Member (Step 2B - Recommended) -->
+        <div class="screen" id="screen-pack-trusted-member">
             <div class="status-bar">
                 <span>9:41</span>
                 <span>100%</span>
             </div>
-            <div class="screen-content">
-                <div class="step-indicator">Step 4 of 4</div>
+            <button class="back-btn" onclick="goToScreen('screen-emergency-contact')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="step-indicator">Step 2 of 3: Family Safety Setup</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 66%"></div>
+                </div>
+                <div class="header">
+                    <h1>Trusted Member</h1>
+                    <p>This person can request Emergency access if something happens.</p>
+                </div>
+                <div class="input-group">
+                    <label>Name</label>
+                    <input type="text" placeholder="Enter name">
+                </div>
+                <div class="input-group">
+                    <label>Relationship</label>
+                    <select>
+                        <option value="">Select relationship</option>
+                        <option value="spouse">Spouse</option>
+                        <option value="son">Son</option>
+                        <option value="daughter">Daughter</option>
+                        <option value="parent">Parent</option>
+                        <option value="sibling">Sibling</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Phone Number</label>
+                    <input type="tel" placeholder="+91 9876543210">
+                </div>
+                <div class="input-group">
+                    <label>Email (Optional)</label>
+                    <input type="email" placeholder="email@example.com">
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-pack-add-essentials')">Continue</button>
+                <button class="btn btn-secondary" onclick="goToScreen('screen-pack-add-essentials')">Skip for now</button>
+            </div>
+        </div>
+
+        <!-- Screen 5: Add 3 Essentials (Step 3) -->
+        <div class="screen" id="screen-pack-add-essentials">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-pack-trusted-member')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div class="step-indicator">Step 3 of 3: Essential Assets</div>
                 <div class="progress-bar">
                     <div class="progress-fill" style="width: 100%"></div>
                 </div>
                 <div class="header">
-                    <h1>Security Settings</h1>
-                    <p>Your data stays encrypted and protected.</p>
+                    <h1>Add 3 Essentials</h1>
+                    <p>Adding these 3 activates your Emergency Pack.</p>
                 </div>
-                <div class="card">
-                    <div class="card-header">
-                        <div>
-                            <div class="card-title">App Lock</div>
-                            <p class="microcopy">PIN or Fingerprint</p>
+                <div style="margin-top: 32px;">
+                    <div class="card" style="cursor: pointer; margin-bottom: 16px; padding: 20px;" onclick="goToScreen('screen-pack-health')">
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            <div style="font-size: 36px;">🏥</div>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; font-size: 18px;">Health Insurance</div>
+                            </div>
+                            <div style="font-size: 24px; color: var(--muted);">→</div>
                         </div>
-                        <button class="btn btn-primary" style="margin: 0; padding: 10px 20px; font-size: 15px;" onclick="showAppLockModal()">Enable</button>
+                    </div>
+                    <div class="card" style="cursor: pointer; margin-bottom: 16px; padding: 20px;" onclick="goToScreen('screen-pack-life')">
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            <div style="font-size: 36px;">🛡️</div>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; font-size: 18px;">Life/Term Insurance</div>
+                            </div>
+                            <div style="font-size: 24px; color: var(--muted);">→</div>
+                        </div>
+                    </div>
+                    <div class="card" style="cursor: pointer; padding: 20px;" onclick="goToScreen('screen-pack-bank')">
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            <div style="font-size: 36px;">🏦</div>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; font-size: 18px;">Primary Bank Account</div>
+                            </div>
+                            <div style="font-size: 24px; color: var(--muted);">→</div>
+                        </div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-header">
-                        <div>
-                            <div class="card-title">Recovery Method</div>
-                            <p class="microcopy">OTP + Email</p>
-                        </div>
-                        <button class="btn btn-primary" style="margin: 0; padding: 10px 20px; font-size: 15px;" onclick="showRecoveryModal()">Enable</button>
-                    </div>
-                </div>
-            </div>
-            <div class="nav-buttons">
-                <button class="btn btn-primary" onclick="goToScreen('screen-quick-start')">Continue</button>
             </div>
         </div>
 
@@ -1110,6 +1225,237 @@
                     <p class="microcopy">OTP will be sent to this number</p>
                 </div>
                 <button class="btn btn-primary" onclick="enableRecovery()">Enable Recovery</button>
+            </div>
+        </div>
+
+        <!-- Screen 5A: Pack - Health Insurance -->
+        <div class="screen" id="screen-pack-health">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-pack-add-essentials')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div style="margin-bottom: 16px;">
+                    <p style="font-size: 14px; color: var(--muted); font-weight: 600;">1 of 3 Essential Assets</p>
+                </div>
+                <div class="header">
+                    <h1>Health Insurance</h1>
+                    <p>Documents and nominee status reduce claim delays.</p>
+                </div>
+                <div class="file-upload">
+                    <div class="file-upload-icon">📄</div>
+                    <p style="font-weight: 600; margin-bottom: 4px;">Upload Document</p>
+                    <p class="microcopy">Upload a document to autofill instantly.</p>
+                </div>
+                <div class="input-group">
+                    <label>Provider</label>
+                    <input type="text" placeholder="e.g., HDFC Ergo, Star Health">
+                </div>
+                <div class="input-group">
+                    <label>Policy Number</label>
+                    <input type="text" placeholder="Masked policy number">
+                </div>
+                <div class="input-group">
+                    <label>Renewal Date</label>
+                    <input type="date">
+                </div>
+                <div class="input-group">
+                    <label>Nominee Status</label>
+                    <div class="toggle-group">
+                        <div class="toggle-btn active" onclick="toggleNomineeDetails('pack-health', true)">Yes</div>
+                        <div class="toggle-btn" onclick="toggleNomineeDetails('pack-health', false)">No</div>
+                        <div class="toggle-btn" onclick="toggleNomineeDetails('pack-health', false)">Not Sure</div>
+                    </div>
+                </div>
+                <div class="nominee-details" id="nominee-details-pack-health">
+                    <div class="nominee-details-title">Nominee Information</div>
+                    <div class="input-group" style="margin-bottom: 12px;">
+                        <label>Nominee Name</label>
+                        <input type="text" placeholder="Enter nominee name">
+                    </div>
+                    <div class="input-group" style="margin-bottom: 12px;">
+                        <label>Relationship</label>
+                        <select>
+                            <option value="">Select relationship</option>
+                            <option value="spouse">Spouse</option>
+                            <option value="son">Son</option>
+                            <option value="daughter">Daughter</option>
+                            <option value="parent">Parent</option>
+                            <option value="sibling">Sibling</option>
+                        </select>
+                    </div>
+                    <div class="input-group" style="margin-bottom: 0;">
+                        <label>Nominee Mobile Number</label>
+                        <input type="tel" placeholder="+91 9876543210">
+                    </div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-pack-life')">Save</button>
+                <button class="btn btn-secondary" onclick="goToScreen('screen-pack-life')">Skip for now</button>
+            </div>
+        </div>
+
+        <!-- Screen 5B: Pack - Life Insurance -->
+        <div class="screen" id="screen-pack-life">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-pack-add-essentials')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div style="margin-bottom: 16px;">
+                    <p style="font-size: 14px; color: var(--muted); font-weight: 600;">2 of 3 Essential Assets</p>
+                </div>
+                <div class="header">
+                    <h1>Life/Term Insurance</h1>
+                    <p>Documents and nominee status reduce claim delays.</p>
+                </div>
+                <div class="file-upload">
+                    <div class="file-upload-icon">📄</div>
+                    <p style="font-weight: 600; margin-bottom: 4px;">Upload Document</p>
+                    <p class="microcopy">Upload a document to autofill instantly.</p>
+                </div>
+                <div class="input-group">
+                    <label>Provider</label>
+                    <input type="text" placeholder="e.g., LIC, ICICI Prudential">
+                </div>
+                <div class="input-group">
+                    <label>Policy Number</label>
+                    <input type="text" placeholder="Masked policy number">
+                </div>
+                <div class="input-group">
+                    <label>Maturity Date</label>
+                    <input type="date">
+                </div>
+                <div class="input-group">
+                    <label>Nominee Status</label>
+                    <div class="toggle-group">
+                        <div class="toggle-btn active" onclick="toggleNomineeDetails('pack-life', true)">Yes</div>
+                        <div class="toggle-btn" onclick="toggleNomineeDetails('pack-life', false)">No</div>
+                        <div class="toggle-btn" onclick="toggleNomineeDetails('pack-life', false)">Not Sure</div>
+                    </div>
+                </div>
+                <div class="nominee-details" id="nominee-details-pack-life">
+                    <div class="nominee-details-title">Nominee Information</div>
+                    <div class="input-group" style="margin-bottom: 12px;">
+                        <label>Nominee Name</label>
+                        <input type="text" placeholder="Enter nominee name">
+                    </div>
+                    <div class="input-group" style="margin-bottom: 12px;">
+                        <label>Relationship</label>
+                        <select>
+                            <option value="">Select relationship</option>
+                            <option value="spouse">Spouse</option>
+                            <option value="son">Son</option>
+                            <option value="daughter">Daughter</option>
+                            <option value="parent">Parent</option>
+                            <option value="sibling">Sibling</option>
+                        </select>
+                    </div>
+                    <div class="input-group" style="margin-bottom: 0;">
+                        <label>Nominee Mobile Number</label>
+                        <input type="tel" placeholder="+91 9876543210">
+                    </div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-pack-bank')">Save</button>
+                <button class="btn btn-secondary" onclick="goToScreen('screen-pack-bank')">Skip for now</button>
+            </div>
+        </div>
+
+        <!-- Screen 5C: Pack - Bank Account -->
+        <div class="screen" id="screen-pack-bank">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <button class="back-btn" onclick="goToScreen('screen-pack-add-essentials')">←</button>
+            <div class="screen-content" style="padding-top: 60px;">
+                <div style="margin-bottom: 16px;">
+                    <p style="font-size: 14px; color: var(--muted); font-weight: 600;">3 of 3 Essential Assets</p>
+                </div>
+                <div class="header">
+                    <h1>Primary Bank Account</h1>
+                    <p>Documents and nominee status reduce claim delays.</p>
+                </div>
+                <div class="file-upload">
+                    <div class="file-upload-icon">📄</div>
+                    <p style="font-weight: 600; margin-bottom: 4px;">Upload Document</p>
+                    <p class="microcopy">Upload a document to autofill instantly.</p>
+                </div>
+                <div class="input-group">
+                    <label>Provider</label>
+                    <input type="text" placeholder="e.g., HDFC Bank, SBI">
+                </div>
+                <div class="input-group">
+                    <label>Account Number</label>
+                    <input type="text" placeholder="Masked account number">
+                </div>
+                <div class="input-group">
+                    <label>Nominee Status</label>
+                    <div class="toggle-group">
+                        <div class="toggle-btn active" onclick="toggleNomineeDetails('pack-bank', true)">Yes</div>
+                        <div class="toggle-btn" onclick="toggleNomineeDetails('pack-bank', false)">No</div>
+                        <div class="toggle-btn" onclick="toggleNomineeDetails('pack-bank', false)">Not Sure</div>
+                    </div>
+                </div>
+                <div class="nominee-details" id="nominee-details-pack-bank">
+                    <div class="nominee-details-title">Nominee Information</div>
+                    <div class="input-group" style="margin-bottom: 12px;">
+                        <label>Nominee Name</label>
+                        <input type="text" placeholder="Enter nominee name">
+                    </div>
+                    <div class="input-group" style="margin-bottom: 12px;">
+                        <label>Relationship</label>
+                        <select>
+                            <option value="">Select relationship</option>
+                            <option value="spouse">Spouse</option>
+                            <option value="son">Son</option>
+                            <option value="daughter">Daughter</option>
+                            <option value="parent">Parent</option>
+                            <option value="sibling">Sibling</option>
+                        </select>
+                    </div>
+                    <div class="input-group" style="margin-bottom: 0;">
+                        <label>Nominee Mobile Number</label>
+                        <input type="tel" placeholder="+91 9876543210">
+                    </div>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-pack-complete')">Complete Setup</button>
+                <button class="btn btn-secondary" onclick="goToScreen('screen-pack-complete')">Skip for now</button>
+            </div>
+        </div>
+
+        <!-- Screen 6: Emergency Pack Created -->
+        <div class="screen" id="screen-pack-complete">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>100%</span>
+            </div>
+            <div class="screen-content">
+                <div class="success-screen">
+                    <div class="success-icon">✅</div>
+                    <h1 style="font-size: 32px; margin-bottom: 16px;">Emergency Pack Created</h1>
+                    <div class="checklist" style="width: 100%; text-align: left; margin-bottom: 24px;">
+                        <div class="checklist-item">
+                            <div class="checklist-icon done">✓</div>
+                            <div class="checklist-text">Emergency Pack created</div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-icon done">✓</div>
+                            <div class="checklist-text">Emergency Ready Certificate generated</div>
+                        </div>
+                    </div>
+                    <p style="font-size: 16px; color: var(--muted); margin-bottom: 32px;">You can improve your readiness certificate anytime.</p>
+                </div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" onclick="goToScreen('screen-home')">Go to Home</button>
             </div>
         </div>
 
@@ -1479,49 +1825,104 @@
                     <div class="header-title">FinCare</div>
                 </div>
                 <div class="header-icons">
-                    <button class="icon-btn">🔔</button>
-                    <div class="profile-pic">RK</div>
+                    <div class="profile-pic" onclick="showProfileMenu()" style="cursor: pointer;">RK</div>
                 </div>
             </div>
             <div class="screen-content" style="padding-top: 16px;">
                 
-                <!-- Emergency Ready Certificate Card -->
-                <div class="certificate-section" id="certificate-card">
+                <!-- A) Emergency Pack Card (always visible) -->
+                <div class="card" style="margin-bottom: 20px; cursor: pointer;" onclick="goToScreen('screen-emergency-pack')">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <div>
+                            <div style="font-weight: 700; font-size: 19px; margin-bottom: 6px;">Emergency Pack</div>
+                            <p style="color: var(--good-text); font-size: 14px; font-weight: 600;">Ready</p>
+                        </div>
+                        <div style="font-size: 32px;">📦</div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid var(--border);">
+                        <p style="color: var(--muted); font-size: 14px;">Last updated: Today</p>
+                        <p style="color: var(--primary); font-weight: 600; font-size: 15px;">View Pack →</p>
+                    </div>
+                </div>
+
+                <!-- B) Certificate Status Card -->
+                <!-- B) Certificate Status Card -->
+                <div class="certificate-section" id="certificate-card" style="cursor: pointer;" onclick="goToScreen('screen-certificate')">
                     <div class="certificate-icon" id="cert-icon">⚠️</div>
                     <div class="certificate-status" id="cert-status">Some Gaps</div>
                     <p style="opacity: 0.9; margin-bottom: 16px;" id="cert-subheading">This status is based on nominees, documents, renewals, and access setup in your Emergency Ready Certificate.</p>
-                    <button class="btn" id="cert-cta" style="background: white; color: var(--primary); padding: 14px;" onclick="goToScreen('screen-certificate')">Fix Gaps</button>
+                    <button class="btn" id="cert-cta" style="background: white; color: var(--primary); padding: 14px;" onclick="event.stopPropagation(); goToScreen('screen-certificate')">View Certificate</button>
                 </div>
 
-                <!-- Readiness Steps -->
-                <div style="margin-bottom: 24px;" id="action-items-section">
-                    <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Action Items</h3>
-                    <div id="action-items-container">
+                <!-- C) App Lock Security Card -->
+                <div class="card" style="margin-bottom: 24px;" id="app-lock-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                                <div style="font-size: 24px;">🔒</div>
+                                <div style="font-weight: 700; font-size: 18px;">Secure FinCare with App Lock</div>
+                            </div>
+                            <p style="color: var(--muted); font-size: 15px;">Recommended for added security</p>
+                        </div>
+                        <button class="btn btn-primary" style="margin: 0; padding: 10px 20px; font-size: 15px; white-space: nowrap;" onclick="showAppLockModal()">Enable</button>
+                    </div>
+                </div>
+
+                <!-- D) Readiness Steps (max 3) -->
+                <!-- D) Readiness Steps (max 3) -->
+                <div style="margin-bottom: 24px;" id="readiness-steps-section">
+                    <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Readiness Steps</h3>
+                    <div id="readiness-container">
                         <div class="reminder-card" style="cursor: pointer;" onclick="goToScreen('screen-nominee-gap')" id="action-nominee">
                             <div class="reminder-icon">⚠️</div>
-                            <div class="reminder-content">
+                            <div class="reminder-content" style="flex: 1;">
                                 <h4>Nominee missing in 2 assets</h4>
-                                <p>Update to reduce claim delays</p>
+                                <p>Tap to fix</p>
                             </div>
-                        </div>
-                        <div class="reminder-card" style="cursor: pointer;" onclick="goToScreen('screen-renewal-reminder')" id="action-renewal">
-                            <div class="reminder-icon">📅</div>
-                            <div class="reminder-content">
-                                <h4>1 renewal due in 7 days</h4>
-                                <p>Health insurance renewal approaching</p>
-                            </div>
+                            <button class="btn btn-primary" style="margin: 0; padding: 8px 16px; font-size: 14px;" onclick="event.stopPropagation(); goToScreen('screen-nominee-gap')">Fix</button>
                         </div>
                         <div class="reminder-card" style="cursor: pointer;" onclick="goToScreen('screen-document-missing')" id="action-document">
                             <div class="reminder-icon">📄</div>
-                            <div class="reminder-content">
-                                <h4>3 documents missing</h4>
-                                <p>Upload to complete your records</p>
+                            <div class="reminder-content" style="flex: 1;">
+                                <h4>Upload 3 missing documents</h4>
+                                <p>Tap to upload</p>
                             </div>
+                            <button class="btn btn-primary" style="margin: 0; padding: 8px 16px; font-size: 14px;" onclick="event.stopPropagation(); goToScreen('screen-document-missing')">Upload</button>
+                        </div>
+                        <div class="reminder-card" style="cursor: pointer;" onclick="goToScreen('screen-renewal-reminder')" id="action-renewal">
+                            <div class="reminder-icon">📅</div>
+                            <div class="reminder-content" style="flex: 1;">
+                                <h4>1 renewal due in 7 days</h4>
+                                <p>Health insurance renewal</p>
+                            </div>
+                            <button class="btn btn-primary" style="margin: 0; padding: 8px 16px; font-size: 14px;" onclick="event.stopPropagation(); goToScreen('screen-renewal-reminder')">Update</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Assets Snapshot -->
+                <!-- E) Reminders Preview (next 2) -->
+                <div style="margin-bottom: 24px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <h3 style="font-size: 20px; font-weight: 700;">Upcoming Reminders</h3>
+                        <p style="color: var(--primary); font-weight: 600; cursor: pointer;" onclick="goToTab('reminders')">View all →</p>
+                    </div>
+                    <div class="reminder-card" style="cursor: pointer;" onclick="goToScreen('screen-renewal-reminder')">
+                        <div class="reminder-icon">📅</div>
+                        <div class="reminder-content">
+                            <h4>Health insurance renewal</h4>
+                            <p>Due in 7 days</p>
+                        </div>
+                    </div>
+                    <div class="reminder-card" style="cursor: pointer;" onclick="goToScreen('screen-maturity-reminder')">
+                        <div class="reminder-icon">💰</div>
+                        <div class="reminder-content">
+                            <h4>FD maturity</h4>
+                            <p>Due in 15 days</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- F) Asset Snapshot -->
                 <div style="margin-bottom: 24px;">
                     <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Your Assets</h3>
                     <div class="asset-type-grid">
@@ -2488,8 +2889,75 @@
             completedItems: 4,
             healthNomineeFixed: false,
             bankNomineeFixed: false,
-            bankDocumentFixed: false
+            bankDocumentFixed: false,
+            appLockEnabled: false
         };
+        
+        function validateMobileNumber(input) {
+            // Only allow numbers
+            input.value = input.value.replace(/[^0-9]/g, '');
+            
+            // Auto-advance to OTP when 10 digits entered
+            if (input.value.length === 10) {
+                setTimeout(() => {
+                    goToScreen('screen-otp');
+                }, 300);
+            }
+        }
+
+        function showAppLockModal() {
+            const modal = document.getElementById('app-lock-modal');
+            if (modal) {
+                modal.classList.add('active');
+            }
+        }
+
+        function closeAppLockModal() {
+            const modal = document.getElementById('app-lock-modal');
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        }
+
+        function enableAppLock(method) {
+            appState.appLockEnabled = true;
+            closeAppLockModal();
+            
+            // Hide the app lock card on home screen
+            const appLockCard = document.getElementById('app-lock-card');
+            if (appLockCard) {
+                appLockCard.style.display = 'none';
+            }
+        }
+
+        function showProfileMenu() {
+            const modal = document.getElementById('profile-menu-modal');
+            if (modal) {
+                modal.classList.add('active');
+            }
+        }
+
+        function closeProfileMenu() {
+            const modal = document.getElementById('profile-menu-modal');
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        }
+
+        function goToTab(tabName) {
+            // Navigate to different tabs by showing their corresponding screens
+            const tabMapping = {
+                'home': 'screen-home',
+                'assets': 'screen-asset-inventory',
+                'reminders': 'screen-reminders',
+                'members': 'screen-trusted-members'
+            };
+            
+            const screenId = tabMapping[tabName];
+            if (screenId) {
+                goToScreen(screenId);
+            }
+        }
         
         function goToScreen(screenId) {
             // Hide all screens
@@ -2808,5 +3276,58 @@
             updateCertificateStatus();
         });
     </script>
+
+    <!-- Profile Menu Modal -->
+    <div class="modal-overlay" id="profile-menu-modal">
+        <div class="modal">
+            <div class="modal-header">Profile Menu</div>
+            <div style="margin: 24px 0;">
+                <div class="card" style="cursor: pointer; margin-bottom: 12px; padding: 16px;" onclick="goToScreen('screen-profile'); closeProfileMenu();">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="font-size: 24px;">👤</div>
+                        <div style="font-weight: 600; font-size: 17px;">Profile</div>
+                    </div>
+                </div>
+                <div class="card" style="cursor: pointer; margin-bottom: 12px; padding: 16px;" onclick="goToScreen('screen-security'); closeProfileMenu();">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="font-size: 24px;">🔒</div>
+                        <div style="font-weight: 600; font-size: 17px;">Security</div>
+                    </div>
+                </div>
+                <div class="card" style="cursor: pointer; margin-bottom: 12px; padding: 16px;" onclick="goToScreen('screen-audit-logs'); closeProfileMenu();">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="font-size: 24px;">📋</div>
+                        <div style="font-weight: 600; font-size: 17px;">Audit Logs</div>
+                    </div>
+                </div>
+                <div class="card" style="cursor: pointer; margin-bottom: 12px; padding: 16px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="font-size: 24px;">❓</div>
+                        <div style="font-weight: 600; font-size: 17px;">Help</div>
+                    </div>
+                </div>
+                <div class="card" style="cursor: pointer; padding: 16px; background: linear-gradient(135deg, #0F172A 0%, #1e293b 100%);">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="font-size: 24px;">⭐</div>
+                        <div style="font-weight: 600; font-size: 17px; color: white;">Upgrade to Premium</div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-secondary" onclick="closeProfileMenu()">Close</button>
+        </div>
+    </div>
+
+    <!-- App Lock Modal -->
+    <div class="modal-overlay" id="app-lock-modal">
+        <div class="modal">
+            <div class="modal-header">Set Up App Lock</div>
+            <p class="modal-text">Choose how you'd like to secure FinCare</p>
+            <div style="margin-bottom: 20px;">
+                <button class="btn btn-primary" onclick="enableAppLock('PIN')" style="margin-bottom: 12px;">Set up PIN</button>
+                <button class="btn btn-primary" onclick="enableAppLock('Fingerprint')">Use Fingerprint</button>
+            </div>
+            <button class="btn btn-secondary" onclick="closeAppLockModal()">Maybe Later</button>
+        </div>
+    </div>
 </body>
 </html>
