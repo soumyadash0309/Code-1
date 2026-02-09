@@ -939,7 +939,7 @@
                 </div>
             </div>
             <div class="nav-buttons">
-                <button class="btn btn-primary" onclick="goToScreen('screen-login')">Start</button>
+                <button class="btn btn-primary" onclick="goToScreen('screen-owner-profile-1')">Start</button>
                 <button class="btn btn-secondary" onclick="goToScreen('screen-home')">Skip for now</button>
             </div>
         </div>
@@ -2227,7 +2227,10 @@
                 </div>
                 <div class="tabs">
                     <div class="tab active" onclick="showReminderTab('all')">All</div>
-                    <div class="tab" onclick="showReminderTab('renewals')">Renewals</div>
+                  <div class="tab active" onclick="showReminderTab('all', this)">All</div>
+                    <div class="tab" onclick="showReminderTab('renewals', this)">Renewals</div>
+                    <div class="tab" onclick="showReminderTab('maturities', this)">Maturities</div>
+                    <div class="tab" onclick="showReminderTab('nominees', this)">Nominees</div>
                     <div class="tab" onclick="showReminderTab('maturities')">Maturities</div>
                     <div class="tab" onclick="showReminderTab('nominees')">Nominees</div>
                 </div>
@@ -2815,402 +2818,344 @@
     </div>
 
     <script>
-        let otpTimer = null;
-        let appState = {
-            nomineeFixed: 0,
-            documentsUploaded: 0,
-            renewalMarked: false,
-            totalGaps: 10,
-            completedItems: 4,
-            healthNomineeFixed: false,
-            bankNomineeFixed: false,
-            bankDocumentFixed: false,
-            appLockEnabled: false
-        };
-        
-        function validateMobileNumber(input) {
-            // Only allow numbers
-            input.value = input.value.replace(/[^0-9]/g, '');
-            
-            // Auto-advance to OTP when 10 digits entered
-            if (input.value.length === 10) {
-                setTimeout(() => {
-                    goToScreen('screen-otp');
-                }, 300);
-            }
-        }
+    let otpTimer = null;
 
-        function showAppLockModal() {
-            const modal = document.getElementById('app-lock-modal');
-            if (modal) {
-                modal.classList.add('active');
-            }
-        }
+    let appState = {
+        nomineeFixed: 0,
+        documentsUploaded: 0,
+        renewalMarked: false,
+        totalGaps: 10,
+        completedItems: 4,
+        healthNomineeFixed: false,
+        bankNomineeFixed: false,
+        bankDocumentFixed: false,
+        appLockEnabled: false
+    };
 
-        function closeAppLockModal() {
-            const modal = document.getElementById('app-lock-modal');
-            if (modal) {
-                modal.classList.remove('active');
-            }
-        }
+    // ✅ Mobile validation ONLY (no auto navigation)
+    function validateMobileNumber(input) {
+        input.value = input.value.replace(/[^0-9]/g, '');
+    }
 
-        function enableAppLock(method) {
-            appState.appLockEnabled = true;
-            closeAppLockModal();
-            
-            // Hide the app lock card on home screen
-            const appLockCard = document.getElementById('app-lock-card');
-            if (appLockCard) {
-                appLockCard.style.display = 'none';
-            }
-        }
+    // ✅ Navigation
+    function goToScreen(screenId) {
+        const screens = document.querySelectorAll('.screen');
+        screens.forEach(screen => screen.classList.remove('active'));
 
-        function showProfileMenu() {
-            const modal = document.getElementById('profile-menu-modal');
-            if (modal) {
-                modal.classList.add('active');
-            }
-        }
+        const targetScreen = document.getElementById(screenId);
+        if (targetScreen) {
+            targetScreen.classList.add('active');
 
-        function closeProfileMenu() {
-            const modal = document.getElementById('profile-menu-modal');
-            if (modal) {
-                modal.classList.remove('active');
-            }
-        }
+            // Scroll to top
+            const content = targetScreen.querySelector('.screen-content');
+            if (content) content.scrollTop = 0;
 
-        function goToTab(tabName) {
-            // Navigate to different tabs by showing their corresponding screens
-            const tabMapping = {
-                'home': 'screen-home',
-                'assets': 'screen-asset-inventory',
-                'reminders': 'screen-reminders',
-                'members': 'screen-trusted-members'
-            };
-            
-            const screenId = tabMapping[tabName];
-            if (screenId) {
-                goToScreen(screenId);
-            }
-        }
-        
-        function goToScreen(screenId) {
-            // Hide all screens
-            const screens = document.querySelectorAll('.screen');
-            screens.forEach(screen => screen.classList.remove('active'));
-            
-            // Show target screen
-            const targetScreen = document.getElementById(screenId);
-            if (targetScreen) {
-                targetScreen.classList.add('active');
-                // Scroll to top
-                const content = targetScreen.querySelector('.screen-content');
-                if (content) {
-                    content.scrollTop = 0;
-                }
-                
-                // Start OTP timer if on OTP screen
-                if (screenId === 'screen-otp') {
-                    startOTPTimer();
-                }
+            // OTP timer
+            if (screenId === 'screen-otp') startOTPTimer();
 
-                // Update certificate when going to home or certificate
-                if (screenId === 'screen-home') {
-                    updateCertificateStatus();
-                    updateActionItems();
-                }
-                if (screenId === 'screen-certificate') {
-                    updateCertificateBreakdown();
-                }
-            }
-        }
-
-        function goToAssetTab(tabName) {
-            // Save the tab to show
-            sessionStorage.setItem('assetTab', tabName);
-            goToScreen('screen-asset-inventory');
-            setTimeout(() => {
-                showAssetTab(tabName);
-            }, 100);
-        }
-
-        function updateCertificateStatus() {
-            const certIcon = document.getElementById('cert-icon');
-            const certStatus = document.getElementById('cert-status');
-            const certSubheading = document.getElementById('cert-subheading');
-            const certCta = document.getElementById('cert-cta');
-            const certCard = document.getElementById('certificate-card');
-
-            const incompleteItems = appState.totalGaps - appState.completedItems;
-
-            // Update subheading
-            if (certSubheading) {
-                if (incompleteItems === 0) {
-                    certSubheading.textContent = 'All items complete in your Emergency Ready Certificate.';
-                } else {
-                    certSubheading.textContent = `${incompleteItems} out of ${appState.totalGaps} items incomplete.`;
-                }
+            // Home refresh
+            if (screenId === 'screen-home') {
+                updateCertificateStatus();
+                updateReadinessSteps();
             }
 
-            if (appState.completedItems >= appState.totalGaps) {
-                // All set
-                certIcon.textContent = '✅';
-                certStatus.textContent = 'All Set';
-                certCard.style.background = 'linear-gradient(135deg, #065F46 0%, #047857 100%)';
-                if (certCta) certCta.style.display = 'none';
-            } else if (appState.completedItems <= 2) {
-                // Needs attention
-                certIcon.textContent = '🔴';
-                certStatus.textContent = 'Needs Attention';
-                certCard.style.background = 'linear-gradient(135deg, #9F1239 0%, #BE123C 100%)';
-                if (certCta) {
-                    certCta.textContent = 'Fix Now';
-                    certCta.style.display = 'block';
-                }
-            } else {
-                // Some gaps
-                certIcon.textContent = '⚠️';
-                certStatus.textContent = 'Some Gaps';
-                certCard.style.background = 'linear-gradient(135deg, #0F172A 0%, #1e293b 100%)';
-                if (certCta) {
-                    certCta.textContent = 'Fix Gaps';
-                    certCta.style.display = 'block';
-                }
+            // Certificate refresh
+            if (screenId === 'screen-certificate') {
+                updateCertificateBreakdown();
             }
         }
+    }
 
-        function updateCertificateBreakdown() {
-            // Update health insurance status in breakdown
-            const healthCard = document.querySelector('#screen-certificate .card:nth-of-type(1)');
-            if (healthCard && appState.healthNomineeFixed) {
-                const badge = healthCard.querySelector('.badge');
-                const details = healthCard.querySelector('div[style*="line-height: 1.8"]');
+    // ✅ OTP timer
+    function startOTPTimer() {
+        let timeLeft = 60;
+        const timerElement = document.getElementById('timer');
+        const resendBtn = document.getElementById('resend-btn');
+
+        if (otpTimer) clearInterval(otpTimer);
+
+        if (resendBtn) resendBtn.disabled = true;
+
+        otpTimer = setInterval(() => {
+            timeLeft--;
+
+            if (timerElement) timerElement.textContent = timeLeft;
+
+            if (timeLeft <= 0) {
+                clearInterval(otpTimer);
+                if (resendBtn) resendBtn.disabled = false;
+            }
+        }, 1000);
+    }
+
+    function resendOTP() {
+        startOTPTimer();
+    }
+
+    // ✅ Certificate Card logic
+    function updateCertificateStatus() {
+        const certIcon = document.getElementById('cert-icon');
+        const certStatus = document.getElementById('cert-status');
+        const certSubheading = document.getElementById('cert-subheading');
+        const certCta = document.getElementById('cert-cta');
+        const certCard = document.getElementById('certificate-card');
+
+        if (!certCard) return;
+
+        const incompleteItems = appState.totalGaps - appState.completedItems;
+
+        if (certSubheading) {
+            certSubheading.textContent =
+                incompleteItems === 0
+                    ? 'All items complete in your Emergency Ready Certificate.'
+                    : `${incompleteItems} out of ${appState.totalGaps} items incomplete.`;
+        }
+
+        if (appState.completedItems >= appState.totalGaps) {
+            if (certIcon) certIcon.textContent = '✅';
+            if (certStatus) certStatus.textContent = 'All Set';
+            certCard.style.background = 'linear-gradient(135deg, #065F46 0%, #047857 100%)';
+            if (certCta) certCta.style.display = 'none';
+        } else if (appState.completedItems <= 2) {
+            if (certIcon) certIcon.textContent = '🔴';
+            if (certStatus) certStatus.textContent = 'Needs Attention';
+            certCard.style.background = 'linear-gradient(135deg, #9F1239 0%, #BE123C 100%)';
+            if (certCta) {
+                certCta.textContent = 'Fix Now';
+                certCta.style.display = 'block';
+            }
+        } else {
+            if (certIcon) certIcon.textContent = '⚠️';
+            if (certStatus) certStatus.textContent = 'Some Gaps';
+            certCard.style.background = 'linear-gradient(135deg, #0F172A 0%, #1e293b 100%)';
+            if (certCta) {
+                certCta.textContent = 'Fix Gaps';
+                certCta.style.display = 'block';
+            }
+        }
+    }
+
+    // ✅ Certificate Breakdown refresh
+    function updateCertificateBreakdown() {
+        const healthCard = document.querySelector('#screen-certificate .card:nth-of-type(1)');
+        const bankCard = document.querySelector('#screen-certificate .card:nth-of-type(3)');
+
+        if (healthCard && appState.healthNomineeFixed) {
+            const badge = healthCard.querySelector('.badge');
+            const details = healthCard.querySelector('div[style*="line-height"]');
+            if (badge) {
                 badge.className = 'badge badge-success';
                 badge.textContent = 'All Set';
-                if (details) {
-                    details.innerHTML = `
-                        ✅ Document uploaded<br>
-                        ✅ Nominee marked<br>
-                        ✅ Renewal date added<br>
-                        ✅ Trusted access set
-                    `;
-                }
-                healthCard.style.cursor = 'default';
-                healthCard.onclick = null;
             }
+            if (details) {
+                details.innerHTML = `
+                    ✅ Document uploaded<br>
+                    ✅ Nominee marked<br>
+                    ✅ Renewal date added<br>
+                    ✅ Trusted access set
+                `;
+            }
+            healthCard.style.cursor = 'default';
+            healthCard.onclick = null;
+        }
 
-            // Update bank status in breakdown
-            const bankCard = document.querySelector('#screen-certificate .card:nth-of-type(3)');
-            if (bankCard && appState.bankNomineeFixed && appState.bankDocumentFixed) {
-                const badge = bankCard.querySelector('.badge');
-                const details = bankCard.querySelector('div[style*="line-height: 1.8"]');
+        if (bankCard && appState.bankNomineeFixed && appState.bankDocumentFixed) {
+            const badge = bankCard.querySelector('.badge');
+            const details = bankCard.querySelector('div[style*="line-height"]');
+            if (badge) {
                 badge.className = 'badge badge-success';
                 badge.textContent = 'All Set';
-                if (details) {
-                    details.innerHTML = `
-                        ✅ Document uploaded<br>
-                        ✅ Nominee marked<br>
-                        ✅ Account active<br>
-                        ✅ Trusted access set
-                    `;
-                }
-                bankCard.style.cursor = 'default';
-                bankCard.onclick = null;
             }
+            if (details) {
+                details.innerHTML = `
+                    ✅ Document uploaded<br>
+                    ✅ Nominee marked<br>
+                    ✅ Account active<br>
+                    ✅ Trusted access set
+                `;
+            }
+            bankCard.style.cursor = 'default';
+            bankCard.onclick = null;
+        }
+    }
+
+    // ✅ Readiness steps update (FIXED selectors)
+    function updateReadinessSteps() {
+        const nomineeCard = document.getElementById('action-nominee');
+        const documentCard = document.getElementById('action-document');
+        const renewalCard = document.getElementById('action-renewal');
+
+        // Hide fixed ones
+        if (appState.nomineeFixed >= 2 && nomineeCard) nomineeCard.style.display = 'none';
+        if (appState.documentsUploaded >= 3 && documentCard) documentCard.style.display = 'none';
+        if (appState.renewalMarked && renewalCard) renewalCard.style.display = 'none';
+
+        // Hide whole readiness section if all hidden
+        const readinessSection = document.getElementById('readiness-steps-section');
+        const visible = document.querySelectorAll('#readiness-container .reminder-card:not([style*="display: none"])');
+
+        if (readinessSection && visible.length === 0) {
+            readinessSection.style.display = 'none';
+        }
+    }
+
+    // ✅ Fix nominee flows
+    function saveHealthNominee() {
+        const nomineeDetails = document.getElementById('nominee-details-fix-health');
+        const isVisible = nomineeDetails && nomineeDetails.style.display !== 'none';
+
+        if (isVisible && !appState.healthNomineeFixed) {
+            appState.healthNomineeFixed = true;
+            appState.nomineeFixed += 1;
+            appState.completedItems += 1;
         }
 
-        function saveHealthNominee() {
-            const hasNominee = document.querySelector('#nominee-details-fix-health')?.style.display !== 'none';
-            if (hasNominee) {
-                appState.healthNomineeFixed = true;
-                appState.nomineeFixed += 1;
-                appState.completedItems += 1;
-            }
-            goToScreen('screen-certificate');
+        goToScreen('screen-certificate');
+    }
+
+    function saveBankDetails() {
+        const nomineeDetails = document.getElementById('nominee-details-fix-bank');
+        const isVisible = nomineeDetails && nomineeDetails.style.display !== 'none';
+
+        if (isVisible && !appState.bankNomineeFixed) {
+            appState.bankNomineeFixed = true;
+            appState.nomineeFixed += 1;
+            appState.completedItems += 1;
         }
 
-        function saveBankDetails() {
-            const hasNominee = document.querySelector('#nominee-details-fix-bank')?.style.display !== 'none';
-            if (hasNominee) {
-                appState.bankNomineeFixed = true;
-                appState.nomineeFixed += 1;
-                appState.completedItems += 1;
-            }
+        if (!appState.bankDocumentFixed) {
             appState.bankDocumentFixed = true;
             appState.documentsUploaded += 1;
             appState.completedItems += 1;
-            goToScreen('screen-certificate');
         }
 
-        function updateActionItems() {
-            const actionNominee = document.getElementById('action-nominee');
-            const actionRenewal = document.getElementById('action-renewal');
-            const actionDocument = document.getElementById('action-document');
-            const actionSection = document.getElementById('action-items-section');
+        goToScreen('screen-certificate');
+    }
 
-            // Hide fixed items
-            if (appState.nomineeFixed >= 2 && actionNominee) {
-                actionNominee.style.display = 'none';
-            }
-            if (appState.renewalMarked && actionRenewal) {
-                actionRenewal.style.display = 'none';
-            }
-            if (appState.documentsUploaded >= 3 && actionDocument) {
-                actionDocument.style.display = 'none';
-            }
-
-            // Hide entire section if all done
-            const visibleItems = document.querySelectorAll('#action-items-container .reminder-card:not([style*="display: none"])');
-            if (visibleItems.length === 0 && actionSection) {
-                actionSection.style.display = 'none';
-            }
-        }
-
-        function markRenewalDone() {
+    function markRenewalDone() {
+        if (!appState.renewalMarked) {
             appState.renewalMarked = true;
             appState.completedItems += 1;
-            goToScreen('screen-home');
         }
+        goToScreen('screen-home');
+    }
 
-        function markDocumentsDone() {
+    function markDocumentsDone() {
+        if (appState.documentsUploaded < 3) {
             appState.documentsUploaded = 3;
             appState.completedItems += 1;
-            goToScreen('screen-home');
         }
+        goToScreen('screen-home');
+    }
 
-        function toggleNomineeDetails(formId, show) {
-            const detailsDiv = document.getElementById('nominee-details-' + formId);
-            if (detailsDiv) {
-                detailsDiv.style.display = show ? 'block' : 'none';
-            }
+    // ✅ Nominee toggle (kept simple)
+    function toggleNomineeDetails(formId, show) {
+        const detailsDiv = document.getElementById('nominee-details-' + formId);
+        if (detailsDiv) {
+            detailsDiv.style.display = show ? 'block' : 'none';
         }
+    }
 
-        // Modal functions
-        function showAppLockModal() {
-            document.getElementById('modal-app-lock').classList.add('active');
-        }
+    // ✅ Modal functions (ONLY ONE version)
+    function showAppLockModal() {
+        const modal = document.getElementById('modal-app-lock');
+        if (modal) modal.classList.add('active');
+    }
 
-        function showRecoveryModal() {
-            document.getElementById('modal-recovery').classList.add('active');
-        }
+    function showRecoveryModal() {
+        const modal = document.getElementById('modal-recovery');
+        if (modal) modal.classList.add('active');
+    }
 
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
-        }
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) modal.classList.remove('active');
+    }
 
-        function enableAppLock() {
-            closeModal('modal-app-lock');
-            // Could add visual feedback here
-        }
+    function enableAppLock() {
+        appState.appLockEnabled = true;
+        closeModal('modal-app-lock');
 
-        function enableRecovery() {
-            closeModal('modal-recovery');
-            // Could add visual feedback here
-        }
+        const card = document.getElementById('app-lock-card');
+        if (card) card.style.display = 'none';
+    }
 
-        function startOTPTimer() {
-            let timeLeft = 60;
-            const timerElement = document.getElementById('timer');
-            const resendBtn = document.getElementById('resend-btn');
-            
-            if (otpTimer) {
-                clearInterval(otpTimer);
-            }
-            
-            resendBtn.disabled = true;
-            
-            otpTimer = setInterval(() => {
-                timeLeft--;
-                timerElement.textContent = timeLeft;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(otpTimer);
-                    resendBtn.disabled = false;
-                }
-            }, 1000);
-        }
+    function enableRecovery() {
+        closeModal('modal-recovery');
+    }
 
-        function resendOTP() {
-            startOTPTimer();
-        }
-
-        function showAssetTab(tabName) {
-            const allLists = ['all', 'insurance', 'banks', 'investments', 'loans'];
-            allLists.forEach(list => {
-                const element = document.getElementById('asset-list-' + list);
-                if (element) element.style.display = 'none';
-            });
-            
-            const selectedList = document.getElementById('asset-list-' + tabName);
-            if (selectedList) selectedList.style.display = 'block';
-            
-            const tabs = document.querySelectorAll('#screen-asset-inventory .tab');
-            tabs.forEach(tab => tab.classList.remove('active'));
-            
-            tabs.forEach(tab => {
-                if (tab.textContent.toLowerCase().includes(tabName.toLowerCase()) || 
-                    (tabName === 'all' && tab.textContent === 'All')) {
-                    tab.classList.add('active');
-                }
-            });
-        }
-
-        function goToAssetTab(tabName) {
-            goToScreen('screen-asset-inventory');
-            setTimeout(() => {
-                showAssetTab(tabName);
-            }, 100);
-        }
-
-        function showReminderTab(tabName) {
-            const allLists = ['all', 'renewals', 'maturities', 'nominees'];
-            allLists.forEach(list => {
-                const element = document.getElementById('reminder-list-' + list);
-                if (element) element.style.display = 'none';
-            });
-            
-            const selectedList = document.getElementById('reminder-list-' + tabName);
-            if (selectedList) selectedList.style.display = 'block';
-            
-            const tabs = document.querySelectorAll('#screen-reminders .tab');
-            tabs.forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
-        }
-
-        document.addEventListener('click', (e) => {
-            if (e.target.classList.contains('toggle-btn') && e.target.parentElement.classList.contains('toggle-group')) {
-                const parent = e.target.parentElement;
-                const buttons = parent.querySelectorAll('.toggle-btn');
-                buttons.forEach(btn => btn.classList.remove('active'));
-                e.target.classList.add('active');
-            }
-
-            // Close modal on overlay click
-            if (e.target.classList.contains('modal-overlay')) {
-                e.target.classList.remove('active');
-            }
+    // ✅ Tabs
+    function showAssetTab(tabName) {
+        const allLists = ['all', 'insurance', 'banks', 'investments', 'loans'];
+        allLists.forEach(list => {
+            const el = document.getElementById('asset-list-' + list);
+            if (el) el.style.display = 'none';
         });
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const otpInputs = document.querySelectorAll('.otp-input');
-            
-            otpInputs.forEach((input, index) => {
-                input.addEventListener('input', (e) => {
-                    if (e.target.value.length === 1 && index < otpInputs.length - 1) {
-                        otpInputs[index + 1].focus();
-                    }
-                });
-                
-                input.addEventListener('keydown', (e) => {
-                    if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
-                        otpInputs[index - 1].focus();
-                    }
-                });
+        const selected = document.getElementById('asset-list-' + tabName);
+        if (selected) selected.style.display = 'block';
+
+        const tabs = document.querySelectorAll('#screen-asset-inventory .tab');
+        tabs.forEach(tab => tab.classList.remove('active'));
+
+        tabs.forEach(tab => {
+            if (tab.textContent.toLowerCase().includes(tabName) || (tabName === 'all' && tab.textContent === 'All')) {
+                tab.classList.add('active');
+            }
+        });
+    }
+
+    function showReminderTab(tabName, element) {
+        const allLists = ['all', 'renewals', 'maturities', 'nominees'];
+        allLists.forEach(list => {
+            const el = document.getElementById('reminder-list-' + list);
+            if (el) el.style.display = 'none';
+        });
+
+        const selected = document.getElementById('reminder-list-' + tabName);
+        if (selected) selected.style.display = 'block';
+
+        const tabs = document.querySelectorAll('#screen-reminders .tab');
+        tabs.forEach(tab => tab.classList.remove('active'));
+
+        if (element) element.classList.add('active');
+    }
+
+    // ✅ Toggle active state + close modal overlay
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('toggle-btn') && e.target.parentElement.classList.contains('toggle-group')) {
+            const parent = e.target.parentElement;
+            const buttons = parent.querySelectorAll('.toggle-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            e.target.classList.add('active');
+        }
+
+        if (e.target.classList.contains('modal-overlay')) {
+            e.target.classList.remove('active');
+        }
+    });
+
+    // ✅ OTP inputs UX
+    document.addEventListener('DOMContentLoaded', () => {
+        const otpInputs = document.querySelectorAll('.otp-input');
+
+        otpInputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length === 1 && index < otpInputs.length - 1) {
+                    otpInputs[index + 1].focus();
+                }
             });
 
-            updateCertificateStatus();
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
+                    otpInputs[index - 1].focus();
+                }
+            });
         });
-    </script>
+
+        updateCertificateStatus();
+    });
+</script>
 
     <!-- Profile Menu Modal -->
     <div class="modal-overlay" id="profile-menu-modal">
